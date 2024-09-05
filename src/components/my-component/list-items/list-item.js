@@ -4,23 +4,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Component, h, Prop } from '@stencil/core';
+import { Component, h, Prop, State } from '@stencil/core';
 let ListItem = class ListItem {
+    constructor() {
+        this.isChecked = false;
+        this.handleCheckboxChange = () => {
+            this.isChecked = !this.isChecked;
+        };
+    }
     render() {
         return (h("div", null,
-            h("input", { type: "checkbox" }),
-            h("p", null, this.task),
-            " "));
+            h("input", { type: "checkbox", checked: this.isChecked, onChange: this.handleCheckboxChange }),
+            h("p", { class: this.isChecked ? 'completed' : '' }, this.task)));
     }
 };
 __decorate([
     Prop()
 ], ListItem.prototype, "task", void 0);
+__decorate([
+    State()
+], ListItem.prototype, "isChecked", void 0);
 ListItem = __decorate([
     Component({
         tag: 'list-item',
         styleUrl: 'list-item.css',
-        shadow: true
+        shadow: true,
     })
 ], ListItem);
 export { ListItem };
