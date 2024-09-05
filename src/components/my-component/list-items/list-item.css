@@ -1,0 +1,21 @@
+div {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+p {
+  margin: 0;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+p.completed {
+  text-decoration: line-through;
+}
+

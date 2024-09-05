@@ -20,6 +20,8 @@ export const config: Config = {
       serviceWorker: null,
       copy: [
         { src: 'script.js', dest: '' },
+        { src: 'style.css', dest: '' },
+        { src: 'list-item.css', dest: '' },
       ],
     },
   ],

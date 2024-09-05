@@ -9,6 +9,8 @@ export namespace Components {
     interface ListItem {
         "task": string;
     }
+    interface TodoList {
+    }
 }
 declare global {
     interface HTMLListItemElement extends Components.ListItem, HTMLStencilElement {
@@ -17,16 +19,26 @@ declare global {
         prototype: HTMLListItemElement;
         new (): HTMLListItemElement;
     };
+    interface HTMLTodoListElement extends Components.TodoList, HTMLStencilElement {
+    }
+    var HTMLTodoListElement: {
+        prototype: HTMLTodoListElement;
+        new (): HTMLTodoListElement;
+    };
     interface HTMLElementTagNameMap {
         "list-item": HTMLListItemElement;
+        "todo-list": HTMLTodoListElement;
     }
 }
 declare namespace LocalJSX {
     interface ListItem {
         "task"?: string;
     }
+    interface TodoList {
+    }
     interface IntrinsicElements {
         "list-item": ListItem;
+        "todo-list": TodoList;
     }
 }
 export { LocalJSX as JSX };
@@ -34,6 +46,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
+            "todo-list": LocalJSX.TodoList & JSXBase.HTMLAttributes<HTMLTodoListElement>;
         }
     }
 }
