@@ -22,6 +22,7 @@ export const config: Config = {
         { src: 'script.js', dest: '' },
         { src: 'style.css', dest: '' },
         { src: 'list-item.css', dest: '' },
+        { src: 'list.css', dest: '' },
       ],
     },
   ],
