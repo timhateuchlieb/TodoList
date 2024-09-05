@@ -2,12 +2,12 @@ import { Component, h, State } from '@stencil/core';
 
 @Component({
   tag: 'todo-list',
-  styleUrl: '.todo-list.css',
+  styleUrl: 'list.css',
   shadow: true,
 })
 export class TodoList {
   @State() tasks: string[] = [];
-  newTask: string = '';
+  @State() newTask: string = '';
 
   handleInputChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
@@ -26,18 +26,20 @@ export class TodoList {
     return (
       <div>
         <h1>To-Do List</h1>
+        <p>Anzahl todos: {this.tasks.length}</p>
         <form onSubmit={this.handleFormSubmit}>
           <input
             type="text"
             value={this.newTask}
             onInput={this.handleInputChange}
+            placeholder="Add a new task"
             required
           />
           <button type="submit">Add</button>
         </form>
         <ul>
           {this.tasks.map(task => (
-            <todo-item task={task}></todo-item>
+            <list-item task={task}></list-item>
           ))}
         </ul>
       </div>
