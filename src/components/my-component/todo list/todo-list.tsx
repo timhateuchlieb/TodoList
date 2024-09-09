@@ -1,37 +1,46 @@
-import { Component, h, State } from '@stencil/core';
+import { Component, h, Listen, State } from '@stencil/core';
+import { Task } from './task';
 
 @Component({
   tag: 'todo-list',
-  styleUrl: 'list.css',
+  styleUrl: 'todo-list.css',
   shadow: true,
 })
 export class TodoList {
-  @State() tasks: string[] = [];
-  @State() newTask: string = '';
+  @State() tasks: Task[] = [];
 
-  handleInputChange = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    this.newTask = target.value;
-  };
+  private input: HTMLInputElement;
 
-  handleFormSubmit = (event: Event) => {
+  @Listen('todo')
+  handleCheckboxChange(event: CustomEvent<Task>) {
+    const updatedTask = event.detail;
+    this.tasks = this.tasks.map(task =>
+      task.taskText === updatedTask.taskText
+        ? { ...task, isChecked: updatedTask.isChecked }
+        : task)
+  }
+
+  handleFormSubmit(event: Event) {
     event.preventDefault();
-    if (this.newTask.trim() !== '') {
-      this.tasks = [...this.tasks, this.newTask];
-      this.newTask = '';
+    const text = this.input.value.trim();
+
+    if (text !== '') {
+      const task = new Task(text);
+      this.tasks = [...this.tasks, task];
+      console.log(this.tasks);
+
+      this.input.value = '';
     }
-  };
+  }
 
   render() {
     return (
       <div>
         <h1>To-Do List</h1>
-        <p>Anzahl todos: {this.tasks.length}</p>
-        <form onSubmit={this.handleFormSubmit}>
-          <input
+        <p>Number of tasks: {this.tasks.filter(task => !task.isChecked).length}</p>
+        <form onSubmit={(event) => this.handleFormSubmit(event)}>
+          <input ref={(el) => this.input = el}
             type="text"
-            value={this.newTask}
-            onInput={this.handleInputChange}
             placeholder="Add a new task"
             required
           />
@@ -39,7 +48,7 @@ export class TodoList {
         </form>
         <ul>
           {this.tasks.map(task => (
-            <list-item task={task}></list-item>
+            <todo-item task={task}></todo-item>
           ))}
         </ul>
       </div>

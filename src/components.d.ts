@@ -5,19 +5,36 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { Task } from "./components/my-component/todo list/task";
+export { Task } from "./components/my-component/todo list/task";
 export namespace Components {
-    interface ListItem {
-        "task": string;
+    interface TodoItem {
+        "task": Task;
     }
     interface TodoList {
     }
 }
+export interface TodoItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLTodoItemElement;
+}
 declare global {
-    interface HTMLListItemElement extends Components.ListItem, HTMLStencilElement {
+    interface HTMLTodoItemElementEventMap {
+        "todo": Task;
     }
-    var HTMLListItemElement: {
-        prototype: HTMLListItemElement;
-        new (): HTMLListItemElement;
+    interface HTMLTodoItemElement extends Components.TodoItem, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLTodoItemElementEventMap>(type: K, listener: (this: HTMLTodoItemElement, ev: TodoItemCustomEvent<HTMLTodoItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLTodoItemElementEventMap>(type: K, listener: (this: HTMLTodoItemElement, ev: TodoItemCustomEvent<HTMLTodoItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLTodoItemElement: {
+        prototype: HTMLTodoItemElement;
+        new (): HTMLTodoItemElement;
     };
     interface HTMLTodoListElement extends Components.TodoList, HTMLStencilElement {
     }
@@ -26,18 +43,19 @@ declare global {
         new (): HTMLTodoListElement;
     };
     interface HTMLElementTagNameMap {
-        "list-item": HTMLListItemElement;
+        "todo-item": HTMLTodoItemElement;
         "todo-list": HTMLTodoListElement;
     }
 }
 declare namespace LocalJSX {
-    interface ListItem {
-        "task"?: string;
+    interface TodoItem {
+        "onTodo"?: (event: TodoItemCustomEvent<Task>) => void;
+        "task"?: Task;
     }
     interface TodoList {
     }
     interface IntrinsicElements {
-        "list-item": ListItem;
+        "todo-item": TodoItem;
         "todo-list": TodoList;
     }
 }
@@ -45,7 +63,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "list-item": LocalJSX.ListItem & JSXBase.HTMLAttributes<HTMLListItemElement>;
+            "todo-item": LocalJSX.TodoItem & JSXBase.HTMLAttributes<HTMLTodoItemElement>;
             "todo-list": LocalJSX.TodoList & JSXBase.HTMLAttributes<HTMLTodoListElement>;
         }
     }
