@@ -21,8 +21,8 @@ export const config: Config = {
       copy: [
         { src: 'script.js', dest: '' },
         { src: 'style.css', dest: '' },
-        { src: 'list-item.css', dest: '' },
-        { src: 'list.css', dest: '' },
+        { src: 'todo-item.css', dest: '' },
+        { src: 'todo-list.css', dest: '' },
       ],
     },
   ],
