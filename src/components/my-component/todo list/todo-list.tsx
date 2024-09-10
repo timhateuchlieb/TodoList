@@ -1,4 +1,6 @@
 import { Component, h, Listen, State } from '@stencil/core';
+import { store, addTodo} from '../../../reduxStore/store';
+import { toggleTodo } from '../../../reduxStore/store';
 import { Task } from './task';
 
 @Component({
@@ -8,39 +10,44 @@ import { Task } from './task';
 })
 export class TodoList {
   @State() tasks: Task[] = [];
+  @State() newTaskText: string = '';
 
-  private input: HTMLInputElement;
+  // Subscribe to Redux store
+  componentWillLoad() {
+    store.subscribe(() => {
+      this.tasks = store.getState().todos;
+    });
+  }
 
-  @Listen('todo')
-  handleCheckboxChange(event: CustomEvent<Task>) {
-    const updatedTask = event.detail;
-    this.tasks = this.tasks.map(task =>
-      task.taskText === updatedTask.taskText
-        ? { ...task, isChecked: updatedTask.isChecked }
-        : task)
+  handleInputChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.newTaskText = target.value;
   }
 
   handleFormSubmit(event: Event) {
     event.preventDefault();
-    const text = this.input.value.trim();
-
-    if (text !== '') {
-      const task = new Task(text);
-      this.tasks = [...this.tasks, task];
-      console.log(this.tasks);
-
-      this.input.value = '';
+    if (this.newTaskText.trim() !== '') {
+      const newTask: Task = { taskText: this.newTaskText, isChecked: false };
+      store.dispatch(addTodo(newTask));
+      this.newTaskText = '';
     }
+  }
+
+  @Listen('todoCompleted')
+  handleCheckboxChange(event: CustomEvent<Task>) {
+    store.dispatch(toggleTodo(event.detail));
   }
 
   render() {
     return (
       <div>
         <h1>To-Do List</h1>
-        <p>Number of tasks: {this.tasks.filter(task => !task.isChecked).length}</p>
+        <p>Anzahl todos: {this.tasks.filter(task => !task.isChecked).length}</p>
         <form onSubmit={(event) => this.handleFormSubmit(event)}>
-          <input ref={(el) => this.input = el}
+          <input
             type="text"
+            value={this.newTaskText}
+            onInput={(event) => this.handleInputChange(event)}
             placeholder="Add a new task"
             required
           />

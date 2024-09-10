@@ -8,12 +8,12 @@ import { Task } from '../todo list/task';
 })
 export class TodoItem {
   @Prop() task: Task;
-  @Event() todo: EventEmitter<Task>;
 
-  handleCheckboxChange = () => {
-    this.task.isChecked = !this.task.isChecked;
-    this.todo.emit(this.task);
-  };
+  @Event() todoCompleted: EventEmitter<Task>;
+
+  handleCheckboxChange() {
+    this.todoCompleted.emit(this.task);
+  }
 
   render() {
     return (
@@ -21,7 +21,7 @@ export class TodoItem {
         <input
           type="checkbox"
           checked={this.task.isChecked}
-          onChange={this.handleCheckboxChange}
+          onChange={() => this.handleCheckboxChange()}
         />
         <p class={this.task.isChecked ? 'completed' : ''}>{this.task.taskText}</p>
       </div>
