@@ -46,5 +46,9 @@
     "jest-cli": "^29.7.0",
     "puppeteer": "^21.9.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@stencil/redux": "^0.2.0",
+    "redux": "^5.0.1"
+  }
 }
