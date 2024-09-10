@@ -1,19 +1,16 @@
 import { createStore } from 'redux';
 import { Task } from '../components/my-component/todo list/task';
 
-// Define the structure of your state
-interface TodoState {
-  todos: Task[];
-}
-
 // Initial state
-const initialState: TodoState = {
+const initialState = {
   todos: [],
+  newTaskText: '',
 };
 
 // Actions
 const ADD_TODO = 'ADD_TODO';
 const TOGGLE_TODO = 'TOGGLE_TODO';
+export const UPDATE_NEW_TASK_TEXT = 'UPDATE_NEW_TASK_TEXT';
 
 // Action creators
 export const addTodo = (task: Task) => ({
@@ -26,8 +23,13 @@ export const toggleTodo = (task: Task) => ({
   payload: task,
 });
 
+export const updateNewTaskText = (text: string) => ({
+  type: UPDATE_NEW_TASK_TEXT,
+  payload: text,
+});
+
 // Reducer
-function todoReducer(state = initialState, action): TodoState {
+function todoReducer(state = initialState, action): { newTaskText: any; todos: any[] } {
   switch (action.type) {
     case ADD_TODO:
       return {
@@ -42,6 +44,11 @@ function todoReducer(state = initialState, action): TodoState {
             ? { ...todo, isChecked: !todo.isChecked }
             : todo
         ),
+      };
+    case UPDATE_NEW_TASK_TEXT:
+      return {
+        ...state,
+        newTaskText: action.payload,
       };
     default:
       return state;
