@@ -15,7 +15,13 @@ p {
   flex-grow: 1;
 }
 
-p.completed {
+.completed {
   text-decoration: line-through;
+  color: gray;
 }
+
+:host {
+  display: block;
+}
+
 

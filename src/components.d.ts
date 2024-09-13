@@ -8,8 +8,6 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { Task } from "./components/my-component/todo list/task";
 export { Task } from "./components/my-component/todo list/task";
 export namespace Components {
-    interface AppRoot {
-    }
     interface TodoItem {
         "task": Task;
     }
@@ -21,12 +19,6 @@ export interface TodoItemCustomEvent<T> extends CustomEvent<T> {
     target: HTMLTodoItemElement;
 }
 declare global {
-    interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {
-    }
-    var HTMLAppRootElement: {
-        prototype: HTMLAppRootElement;
-        new (): HTMLAppRootElement;
-    };
     interface HTMLTodoItemElementEventMap {
         "todoCompleted": Task;
     }
@@ -51,14 +43,11 @@ declare global {
         new (): HTMLTodoListElement;
     };
     interface HTMLElementTagNameMap {
-        "app-root": HTMLAppRootElement;
         "todo-item": HTMLTodoItemElement;
         "todo-list": HTMLTodoListElement;
     }
 }
 declare namespace LocalJSX {
-    interface AppRoot {
-    }
     interface TodoItem {
         "onTodoCompleted"?: (event: TodoItemCustomEvent<Task>) => void;
         "task"?: Task;
@@ -66,7 +55,6 @@ declare namespace LocalJSX {
     interface TodoList {
     }
     interface IntrinsicElements {
-        "app-root": AppRoot;
         "todo-item": TodoItem;
         "todo-list": TodoList;
     }
@@ -75,7 +63,6 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "todo-item": LocalJSX.TodoItem & JSXBase.HTMLAttributes<HTMLTodoItemElement>;
             "todo-list": LocalJSX.TodoList & JSXBase.HTMLAttributes<HTMLTodoListElement>;
         }
