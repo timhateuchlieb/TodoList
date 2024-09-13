@@ -1,6 +1,6 @@
-import { Component, h, Listen, State } from '@stencil/core';
-import { store, addTodo} from '../../../reduxStore/store';
-import { toggleTodo } from '../../../reduxStore/store';
+import { Component, h } from '@stencil/core';
+import { store } from '../../../reduxStore/store';
+import { addTodo, updateNewTaskText, toggleTodo } from '../../../reduxStore/store';
 import { Task } from './task';
 
 @Component({
@@ -9,44 +9,37 @@ import { Task } from './task';
   shadow: true,
 })
 export class TodoList {
-  @State() tasks: Task[] = [];
-  @State() newTaskText: string = '';
-
-  // Subscribe to Redux store
-  componentWillLoad() {
-    store.subscribe(() => {
-      this.tasks = store.getState().todos;
-    });
-  }
 
   handleInputChange(event: Event) {
+    console.log("InputChange", event);
     const target = event.target as HTMLInputElement;
-    this.newTaskText = target.value;
+    store.dispatch(updateNewTaskText(target.value));
   }
 
   handleFormSubmit(event: Event) {
+    console.log("FormSubmit", event);
     event.preventDefault();
-    if (this.newTaskText.trim() !== '') {
-      const newTask: Task = { taskText: this.newTaskText, isChecked: false };
-      store.dispatch(addTodo(newTask));
-      this.newTaskText = '';
+    if (store.getState().newTaskText  !== '') {
+      const task = new Task(store.getState().newTaskText);
+      store.dispatch(addTodo(task));
+      store.dispatch(store.dispatch(updateNewTaskText('')));
     }
   }
 
-  @Listen('todoCompleted')
-  handleCheckboxChange(event: CustomEvent<Task>) {
-    store.dispatch(toggleTodo(event.detail));
+  handleTaskUpdated(event: CustomEvent<Task>) {
+    const updatedTask = event.detail;
+    store.dispatch(toggleTodo(updatedTask));
   }
 
   render() {
     return (
       <div>
         <h1>To-Do List</h1>
-        <p>Anzahl todos: {this.tasks.filter(task => !task.isChecked).length}</p>
+        <p>Tasks left: {store.getState().todos.filter(task => !task.isChecked).length}</p>
         <form onSubmit={(event) => this.handleFormSubmit(event)}>
           <input
             type="text"
-            value={this.newTaskText}
+            value={store.getState().newTaskText}
             onInput={(event) => this.handleInputChange(event)}
             placeholder="Add a new task"
             required
@@ -54,8 +47,8 @@ export class TodoList {
           <button type="submit">Add</button>
         </form>
         <ul>
-          {this.tasks.map(task => (
-            <todo-item task={task}></todo-item>
+          {store.getState().todos.map(todo => (
+            <todo-item task={todo}></todo-item>
           ))}
         </ul>
       </div>
