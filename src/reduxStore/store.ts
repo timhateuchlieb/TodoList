@@ -48,11 +48,14 @@ function todoReducer(state = initialState, action): TodoState {
         todos: [...state.todos, action.payload],
       };
     case TOGGLE_TODO:
+      console.log('TOGGLE_TODO:');
+      console.log('action: ', action);
+      console.log('All items in todos array: ', state);
       return {
         ...state,
         todos: state.todos.map(todo =>
           todo.taskText === action.payload.taskText
-            ? { ...todo, isChecked: !todo.isChecked }
+           ? { ...todo, isChecked: !todo.isChecked }
             : todo
         ),
       };
