@@ -11,7 +11,9 @@ export class TodoItem {
 
   @Event() todoCompleted: EventEmitter<Task>;
 
-  handleCheckboxChange() {
+  handleCheckboxChange(event: Event) {
+    event.preventDefault();
+    this.task.isChecked = !this.task.isChecked;
     this.todoCompleted.emit(this.task);
   }
 
@@ -21,7 +23,7 @@ export class TodoItem {
         <input
           type="checkbox"
           checked={this.task.isChecked}
-          onChange={() => this.handleCheckboxChange()}
+          onChange={(event) => this.handleCheckboxChange(event)}
         />
         <p class={this.task.isChecked ? 'completed' : ''}>{this.task.taskText}</p>
       </div>
