@@ -29,10 +29,8 @@ export class TodoList {
   }
 
   handleTaskUpdated(event: CustomEvent<Task>) {
-    console.log("toggle toggle the todo");
     const updatedTask = event.detail;
     store.dispatch(toggleTodo(updatedTask));
-    console.log("now the store knows");
   }
 
   handleInputChange(event: Event) {
