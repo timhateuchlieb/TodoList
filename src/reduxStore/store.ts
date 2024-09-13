@@ -40,7 +40,7 @@ function todoReducer(state = initialState, action): TodoState {
     case ADD_TODO:
       console.log('ADD_TODO:', action.payload);
       console.log('All items in todos array: ')
-      todos: state.todos.map(todo =>
+      state.todos.map(todo =>
         console.log('todos: ',todo)
       )
       return {
