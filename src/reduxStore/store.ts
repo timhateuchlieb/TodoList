@@ -38,15 +38,11 @@ export const updateNewTaskText = (text: string) => ({
 function todoReducer(state = initialState, action): TodoState {
   switch (action.type) {
     case ADD_TODO:
-      console.log('ADD_TODO:', action.payload);
-      console.log('All items in todos array: ')
-      state.todos.map(todo =>
-        console.log('todos: ',todo)
-      )
       return {
         ...state,
         todos: [...state.todos, action.payload],
-      };
+        newTaskText: '',
+      }
     case TOGGLE_TODO:
       return {
         ...state,
@@ -57,7 +53,6 @@ function todoReducer(state = initialState, action): TodoState {
         ),
       };
     case UPDATE_NEW_TASK_TEXT:
-      console.log("UPDATE_NEW_TASK_TEXT", action.payload);
       return {
         ...state,
         newTaskText: action.payload,
