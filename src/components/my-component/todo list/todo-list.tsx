@@ -24,7 +24,6 @@ export class TodoList {
     if (newTaskText.trim()) {
       const task = new Task(newTaskText);
       store.dispatch(addTodo(task));
-      store.dispatch({ type: 'UPDATE_NEW_TASK_TEXT', payload: '' });
     }
   }
 
