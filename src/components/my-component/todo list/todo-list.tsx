@@ -12,6 +12,7 @@ export class TodoList {
   @State() tasks: Task[] = [];
 
   componentWillLoad() {
+    console.log('Checkpoint1');
     store.subscribe(() => {
       const state = store.getState();
       this.tasks = [...state.todos];
@@ -38,6 +39,7 @@ export class TodoList {
   }
 
   render() {
+    console.log('rendering')
     return (
       <div>
         <h1>To-Do List</h1>

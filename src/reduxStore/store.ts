@@ -2,7 +2,7 @@ import { createStore } from 'redux';
 import { Task } from '../components/my-component/todo list/task';
 
 // Define the structure of your state
-interface TodoState {
+export interface TodoState {
   todos: Task[];
   newTaskText: string;
 }
@@ -64,3 +64,4 @@ function todoReducer(state = initialState, action): TodoState {
 
 // Create the Redux store
 export const store = createStore(todoReducer);
+
