@@ -36,6 +36,7 @@ export const updateNewTaskText = (text: string) => ({
 
 // Reducer
 function todoReducer(state = initialState, action): TodoState {
+  console.log("todo Reducer")
   switch (action.type) {
     case ADD_TODO:
       return {
@@ -44,6 +45,7 @@ function todoReducer(state = initialState, action): TodoState {
         newTaskText: '',
       }
     case TOGGLE_TODO:
+      console.log('toggle todo');
       return {
         ...state,
         todos: state.todos.map(todo =>
