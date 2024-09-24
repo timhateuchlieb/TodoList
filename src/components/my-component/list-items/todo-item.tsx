@@ -12,6 +12,7 @@ export class TodoItem {
   @Event() todoCompleted: EventEmitter<Task>;
 
   handleCheckboxChange() {
+    console.log("handleCheckboxChange");
     this.todoCompleted.emit(this.task);
   }
 
