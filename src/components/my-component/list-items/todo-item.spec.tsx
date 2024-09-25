@@ -2,6 +2,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { TodoItem } from './todo-item';
 import { Task } from '../todo list/task';
 import { h } from '@stencil/core';
+import { store, toggleTodo } from '../../../reduxStore/store';
 
 describe('todo-item', () => {
 
@@ -48,7 +49,7 @@ describe('todo-item', () => {
     const checkbox = page.root.shadowRoot.querySelector('input[type="checkbox"]') as HTMLInputElement;
     expect(checkbox).not.toBeNull();
 
-    //checkbox.checked only a cheat find something that can actually redirect to store
+    //checkbox.checked = true;  only a cheat!!! find something that can actually redirect to store
     checkbox.checked = true;
     checkbox.dispatchEvent(new CustomEvent('change'));
     await page.waitForChanges();
@@ -56,9 +57,13 @@ describe('todo-item', () => {
     expect(checkbox.checked).toBe(true);
 
 
-    //checkbox.checked only a cheat find something that can actually redirect to store
+    //checkbox.checked = false;  only a cheat!!! find something that can actually redirect to store
     checkbox.checked = false;
-    checkbox.click();
+
+
+    //checkbox.click();
+    //store.dispatch(toggleTodo(page.root.querySelector('todo-item')));
+
     await page.waitForChanges();
 
     expect(checkbox.checked).toBe(false);

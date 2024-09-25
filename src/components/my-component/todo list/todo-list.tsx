@@ -16,6 +16,7 @@ export class TodoList {
       const state = store.getState();
       this.tasks = [...state.todos];
     });
+    console.log(store);
   }
 
   handleFormSubmit(event: Event) {
@@ -38,7 +39,7 @@ export class TodoList {
   }
 
   render() {
-    console.log('rendering')
+    console.log('rendering tasks ', this.tasks);
     return (
       <div>
         <h1>To-Do List</h1>
@@ -55,7 +56,7 @@ export class TodoList {
         </form>
         <ul>
           {this.tasks.map(task => (
-            <todo-item task={task} onTodoCompleted={(event) => this.handleTaskUpdated(event)}></todo-item>
+            <todo-item task={task} onTodoCompleted={(event) => console.log('OK')}></todo-item>
           ))}
         </ul>
       </div>
