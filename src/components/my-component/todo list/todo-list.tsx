@@ -29,6 +29,7 @@ export class TodoList {
   }
 
   handleTaskUpdated(event: CustomEvent<Task>) {
+    console.log('TodoList handleTaskUpdated');
     const updatedTask = event.detail;
     store.dispatch(toggleTodo(updatedTask));
   }
@@ -56,7 +57,7 @@ export class TodoList {
         </form>
         <ul>
           {this.tasks.map(task => (
-            <todo-item task={task} onTodoCompleted={(event) => console.log('OK')}></todo-item>
+            <todo-item task={task} onTodoCompleted={(event) => this.handleTaskUpdated(event)}></todo-item>
           ))}
         </ul>
       </div>
