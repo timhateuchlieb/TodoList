@@ -39,18 +39,33 @@ describe('todo-item', () => {
     expect(page.root.shadowRoot.querySelector('p').textContent).toBe(task.taskText);
   });
 
-  xit('should toggle Todo correctly', async () => {
+  it('toggles a task when the checkbox is clicked', async () => {
+    const task: Task = { taskText: 'Test task', isChecked: false };
+
+    store.dispatch = jest.fn();
+
     const page = await newSpecPage({
       components: [TodoItem],
-      template: () => (<todo-item></todo-item>),
-    })
+      template: () => (<todo-item task={task}></todo-item>),
+    });
 
-    page.root.querySelector('input').checked = true;
-
+    const checkbox = page.root.shadowRoot.querySelector('input[type="checkbox"]') as HTMLInputElement;
+    expect(checkbox).not.toBeNull();
+    expect(checkbox.checked).toBe(false);
+    checkbox.checked = true;
+    checkbox.dispatchEvent(new Event('change'));
     await page.waitForChanges();
 
-    expect(page.root.querySelector('input')).toBe(true)
+    expect(store.dispatch).toHaveBeenCalledWith(toggleTodo({ ...task, isChecked: true }));
+
+    checkbox.checked = false;
+    checkbox.dispatchEvent(new Event('change'));
+    await page.waitForChanges();
+
+    expect(store.dispatch).toHaveBeenCalledWith(toggleTodo({ ...task, isChecked: false }));
   });
+
+
 
   //todo || does want to toggle checkbox but logic in store is never reached...
 
@@ -90,25 +105,5 @@ describe('todo-item', () => {
 
     const updatedTask = page.root.task;
     expect(updatedTask.isChecked).toBe(false);
-  });
-
-  xit('toggles a task when the checkbox is clicked', async () => {
-    const task: Task = { taskText: 'Test task', isChecked: false };
-
-    const page = await newSpecPage({
-      components: [TodoItem],
-      template: () => (<todo-item task={task}></todo-item>),
-    });
-
-    const checkbox = page.root.shadowRoot.querySelector('input[type="checkbox"]') as HTMLInputElement;
-    expect(checkbox).not.toBeNull();
-    expect(checkbox.checked).toBe(false);
-
-    // Simulate the click event on the checkbox
-    checkbox.click();
-    await page.waitForChanges();
-
-    // Check that the dispatch function is called with the correct action
-    expect(store.dispatch).toHaveBeenCalledWith(toggleTodo(task));
   });
 });

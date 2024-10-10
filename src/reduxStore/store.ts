@@ -64,11 +64,15 @@ function todoReducer(state = initialState, action): TodoState {
         ...state,
         newTaskText: action.payload,
       };
+
+      /*
     case RESET_STORE:
       console.log('RESET_STORE');
       return {
         ...initialState,
       };
+
+       */
     default:
       return state;
   }
