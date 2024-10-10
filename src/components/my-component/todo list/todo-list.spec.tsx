@@ -110,7 +110,7 @@ describe('TodoList tests', () => {
   });
 
   //  todo look at this again should be possible
-  xit('updates the input value when typing', async () => {
+  it('updates the input value when typing', async () => {
     const page = await newSpecPage({
       components: [TodoList],
       html: `<todo-list></todo-list>`,
