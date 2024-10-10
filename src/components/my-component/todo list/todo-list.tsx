@@ -1,7 +1,7 @@
-import { Component, h, State } from '@stencil/core';
-import { store } from '../../../reduxStore/store';
-import { addTodo, toggleTodo } from '../../../reduxStore/store';
+import { Component, ComponentInterface, h, State } from '@stencil/core';
+import { addTodo, store, toggleTodo } from '../../../reduxStore/store';
 import { Task } from './task';
+import { Unsubscribe } from 'redux';
 
 @Component({
   tag: 'todo-list',
@@ -11,12 +11,25 @@ import { Task } from './task';
 export class TodoList {
   @State() tasks: Task[] = [];
 
+  private instance = Math.random();
+
+  private unsubscribe: Unsubscribe = null;
+
   componentWillLoad() {
-    store.subscribe(() => {
+    console.log('COMPONENT WILL LOAD')
+    this.unsubscribe = store.subscribe(() => {
       const state = store.getState();
       this.tasks = [...state.todos];
     });
     console.log(store);
+  }
+
+  disconnectedCallback() {
+    console.log('DISCONNECTED CALLBACK');
+    if (this.unsubscribe) {
+      console.log('unsubscribe', this.instance);
+      this.unsubscribe();
+    }
   }
 
   handleFormSubmit(event: Event) {
@@ -40,7 +53,7 @@ export class TodoList {
   }
 
   render() {
-    console.log('rendering tasks ', this.tasks);
+    console.log('rendering tasks ', this.tasks, 'on instance', this.instance);
     return (
       <div>
         <h1>To-Do List</h1>

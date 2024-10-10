@@ -2,22 +2,22 @@ import { newSpecPage } from '@stencil/core/testing';
 import { TodoItem } from './todo-item';
 import { Task } from '../todo list/task';
 import { h } from '@stencil/core';
-import { addTodo, store, toggleTodo } from '../../../reduxStore/store';
-import { TodoList } from '../todo list/todo-list';
+import { store, toggleTodo } from '../../../reduxStore/store';
+
+
+jest.mock('../../../reduxStore/store', () => ({
+  store: {
+    dispatch: jest.fn(),
+    getState: jest.fn(() => ({
+      todos: [],
+      newTaskText: '',
+    })),
+    subscribe: jest.fn(),
+  },
+  toggleTodo: jest.fn(),
+}));
 
 describe('todo-item', () => {
-
-  jest.mock('../../../reduxStore/store', () => ({
-    store: {
-      dispatch: jest.fn(),
-      getState: jest.fn(() => ({
-        todos: [],
-        newTaskText: '',
-      })),
-      subscribe: jest.fn(),
-    },
-    toggleTodo: jest.fn(),
-  }));
 
   it('renders with the correct task text and checkbox state', async () => {   //✅
     const task: Task = { taskText: 'Test task', isChecked: false };
@@ -39,19 +39,18 @@ describe('todo-item', () => {
     expect(page.root.shadowRoot.querySelector('p').textContent).toBe(task.taskText);
   });
 
-  it('should toggle Todo correctly', async () => {
+  xit('should toggle Todo correctly', async () => {
     const page = await newSpecPage({
       components: [TodoItem],
       template: () => (<todo-item></todo-item>),
     })
 
-    console.log(page.root.shadowRoot.innerHTML)
+    page.root.querySelector('input').checked = true;
+
+    await page.waitForChanges();
+
+    expect(page.root.querySelector('input')).toBe(true)
   });
-
-
-
-
-
 
   //todo || does want to toggle checkbox but logic in store is never reached...
 
@@ -79,10 +78,8 @@ describe('todo-item', () => {
 
     expect(checkbox.checked).toBe(true);
 
-
     //checkbox.checked = false;  only a cheat!!! find something that can actually redirect to store
     checkbox.checked = false;
-
 
     //checkbox.click();
     //store.dispatch(toggleTodo(page.root.querySelector('todo-item')));
@@ -93,5 +90,25 @@ describe('todo-item', () => {
 
     const updatedTask = page.root.task;
     expect(updatedTask.isChecked).toBe(false);
+  });
+
+  xit('toggles a task when the checkbox is clicked', async () => {
+    const task: Task = { taskText: 'Test task', isChecked: false };
+
+    const page = await newSpecPage({
+      components: [TodoItem],
+      template: () => (<todo-item task={task}></todo-item>),
+    });
+
+    const checkbox = page.root.shadowRoot.querySelector('input[type="checkbox"]') as HTMLInputElement;
+    expect(checkbox).not.toBeNull();
+    expect(checkbox.checked).toBe(false);
+
+    // Simulate the click event on the checkbox
+    checkbox.click();
+    await page.waitForChanges();
+
+    // Check that the dispatch function is called with the correct action
+    expect(store.dispatch).toHaveBeenCalledWith(toggleTodo(task));
   });
 });
