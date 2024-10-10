@@ -17,6 +17,7 @@ const initialState: TodoState = {
 const ADD_TODO = 'ADD_TODO';
 const TOGGLE_TODO = 'TOGGLE_TODO';
 const UPDATE_NEW_TASK_TEXT = 'UPDATE_NEW_TASK_TEXT';
+const RESET_STORE = 'RESET_STORE';
 
 // Action creators
 export const addTodo = (task: Task) => ({
@@ -33,6 +34,10 @@ export const updateNewTaskText = (text: string) => ({
   type: UPDATE_NEW_TASK_TEXT,
   payload: text,
 });
+
+export const resetStore = () => ({
+  type: RESET_STORE,
+})
 
 // Reducer
 function todoReducer(state = initialState, action): TodoState {
@@ -58,6 +63,11 @@ function todoReducer(state = initialState, action): TodoState {
       return {
         ...state,
         newTaskText: action.payload,
+      };
+    case RESET_STORE:
+      console.log('RESET_STORE');
+      return {
+        ...initialState,
       };
     default:
       return state;

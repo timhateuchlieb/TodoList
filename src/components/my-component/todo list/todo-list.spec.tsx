@@ -3,8 +3,10 @@ import { addTodo } from '../../../reduxStore/store';
 import { Task } from './task';
 
 import { newSpecPage } from '@stencil/core/testing';
-import { store } from '../../../reduxStore/store';
+import { store, resetStore } from '../../../reduxStore/store';
 import { TodoList } from './todo-list';
+
+
 
 jest.mock('../../../reduxStore/store', () => ({
   store: {
@@ -13,15 +15,17 @@ jest.mock('../../../reduxStore/store', () => ({
       todos: [],
       newTaskText: '',
     })),
+    resetStore: jest.fn(),
     subscribe: jest.fn(),
   },
 }));
 
+
 describe('TodoList tests', () => {
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+  beforeEach(async () => {
+    store.dispatch(resetStore());
+  })
 
   it('renders correctly', async () => {     //✅
     const page = await newSpecPage({
@@ -56,6 +60,7 @@ describe('TodoList tests', () => {
     await page.waitForChanges();
 
     expect(page.root.shadowRoot.querySelector('p').textContent).toBe('Tasks left: 2');
+    window.location.reload();
   });
 
   it('checks if displaying number of todos works fine', async () => {     //✅
@@ -73,19 +78,19 @@ describe('TodoList tests', () => {
 
     await page1.waitForChanges();
 
-    expect(page1.root.shadowRoot.querySelector('ul').childNodes.length).toBe(1)
+    expect(page1.root.shadowRoot.querySelector('ul').childNodes.length).toBe(1);
 
     store.dispatch(addTodo(task));
 
     await page1.waitForChanges();
 
-    expect(page1.root.shadowRoot.querySelector('ul').childNodes.length).toBe(2)
+    expect(page1.root.shadowRoot.querySelector('ul').childNodes.length).toBe(2);
 
     store.dispatch(addTodo(task));
 
     await page1.waitForChanges();
 
-    expect(page1.root.shadowRoot.querySelector('ul').childNodes.length).toBe(3)
+    expect(page1.root.shadowRoot.querySelector('ul').childNodes.length).toBe(3);
   });
 
   it('renders the correct number of TodoItem components', async () => {
