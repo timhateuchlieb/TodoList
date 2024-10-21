@@ -11,13 +11,11 @@ export class TodoItem {
 
   @Event() todoCompleted: EventEmitter<Task>;
 
-
   componentWillLoad() {
     console.log('Item Loaded')
   }
 
   handleCheckboxChange() {
-    console.log("handleCheckboxChange");
     this.todoCompleted.emit(this.task);
   }
 
