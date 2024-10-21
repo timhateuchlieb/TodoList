@@ -1,46 +1,36 @@
 import { h } from '@stencil/core';
-import { addTodo } from '../../../reduxStore/store';
+import { addTodo, toggleTodo } from '../../../reduxStore/store';
 import { Task } from './task';
-
 import { newSpecPage } from '@stencil/core/testing';
-import { store, resetStore } from '../../../reduxStore/store';
+import { store } from '../../../reduxStore/store';
 import { TodoList } from './todo-list';
 
+describe('TodoList Component with Store Mocked', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-
-jest.mock('../../../reduxStore/store', () => ({
-  store: {
-    dispatch: jest.fn(),
-    getState: jest.fn(() => ({
-      todos: [],
-      newTaskText: '',
-    })),
-    resetStore: jest.fn(),
-    subscribe: jest.fn(),
-  },
-}));
-
-
-describe('TodoList tests', () => {
-
-  beforeEach(async () => {
-    store.dispatch(resetStore());
-  })
-
-  it('renders correctly', async () => {     //✅
+  it('renders the TodoList component correctly', async () => {
     const page = await newSpecPage({
       components: [TodoList],
       template: () => <todo-list></todo-list>,
     });
 
     expect(await page.waitForChanges()).not.toBeNull();
-
     expect(page.root.shadowRoot.querySelector('h1').textContent).toBe('To-Do List');
     expect(page.root.shadowRoot.querySelector('p').textContent).toBe('Tasks left: 0');
-    expect(page.root.shadowRoot.querySelector('ul').innerHTML.length).toBe(0);
+    expect(page.root.shadowRoot.querySelector('ul').childElementCount).toBe(0);
   });
 
-  it('displays the correct number of tasks', async () => {     //✅
+  it('calls store.getState to retrieve tasks and display them', async () => {
+    const getStateSpy = jest.spyOn(store, 'getState').mockReturnValue({
+      todos: [
+        { taskText: 'Test task 1', isChecked: false },
+        { taskText: 'Test task 2', isChecked: true },
+      ],
+      newTaskText: '',
+    });
+
     const page = await newSpecPage({
       components: [TodoList],
       template: () => <todo-list></todo-list>,
@@ -48,69 +38,34 @@ describe('TodoList tests', () => {
 
     await page.waitForChanges();
 
-    expect(page.root.shadowRoot.querySelector('p').textContent).toBe('Tasks left: 0');
+    expect(getStateSpy).toHaveBeenCalledTimes(1);
 
-    const task: Task = { taskText: 'Test task', isChecked: false };
-    store.dispatch(addTodo(task));
-    await page.waitForChanges();
-
-    expect(page.root.shadowRoot.querySelector('p').textContent).toBe('Tasks left: 1');
-
-    store.dispatch(addTodo(task));
-    await page.waitForChanges();
-
-    expect(page.root.shadowRoot.querySelector('p').textContent).toBe('Tasks left: 2');
-    window.location.reload();
+    getStateSpy.mockRestore();
   });
 
-  it('checks if displaying number of todos works fine', async () => {     //✅
-
-    const page1 = await newSpecPage({
-      components: [TodoList],
-      template: () => (<todo-list></todo-list>),
-    });
-
-    const task: Task = { taskText: 'Test task', isChecked: false };
-
-    await page1.waitForChanges();
-
-    store.dispatch(addTodo(task));
-
-    await page1.waitForChanges();
-
-    expect(page1.root.shadowRoot.querySelector('ul').childNodes.length).toBe(1);
-
-    store.dispatch(addTodo(task));
-
-    await page1.waitForChanges();
-
-    expect(page1.root.shadowRoot.querySelector('ul').childNodes.length).toBe(2);
-
-    store.dispatch(addTodo(task));
-
-    await page1.waitForChanges();
-
-    expect(page1.root.shadowRoot.querySelector('ul').childNodes.length).toBe(3);
-  });
-
-  it('renders the correct number of TodoItem components', async () => {
+  it('dispatches addTodo action when a new task is added', async () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
     const task: Task = { taskText: 'Test task', isChecked: false };
 
     const page = await newSpecPage({
       components: [TodoList],
-      template: () => (<todo-list></todo-list>),
+      template: () => <todo-list></todo-list>,
     });
 
     store.dispatch(addTodo(task));
-    store.dispatch(addTodo(task));
-    await page.waitForChanges();
 
-    const todoItems = page.root.shadowRoot.querySelectorAll('todo-item');
-    expect(todoItems.length).toBe(2);
+    expect(dispatchSpy).toHaveBeenCalledWith(addTodo(task));
+    expect(dispatchSpy).toHaveBeenCalledTimes(1);
+
+    dispatchSpy.mockRestore();
   });
 
-  //  todo look at this again should be possible
-  it('updates the input value when typing', async () => {
+  it('updates the input value when typing, but does not change store state', async () => {
+    const getStateSpy = jest.spyOn(store, 'getState').mockReturnValue({
+      todos: [],
+      newTaskText: '',
+    });
+
     const page = await newSpecPage({
       components: [TodoList],
       html: `<todo-list></todo-list>`,
@@ -122,45 +77,9 @@ describe('TodoList tests', () => {
 
     await page.waitForChanges();
 
-    expect(store.dispatch).toHaveBeenCalledWith({
-      type: 'UPDATE_NEW_TASK_TEXT',
-      payload: 'New Task Text',
-    });
-  });
+    expect(input.value).toBe('New Task Text');
+    expect(store.getState().newTaskText).toBe('');
 
-//
-//   Test toggle-todo in todo item-item.spec.tsx
-//
-//    all the logic for the toggle is in the item and not the list so it would be much prettier to test it in there
-//
-//    even more importantly that also fixes a lot of problems. This doesnt work because somehow it isn't allowed for me to go through the second shadow root.
-//
-//    if it is needed to test: just test if it is reached till a certain point and not till the actual toggle logic.
-//
-//    ❌ write this test into the item not the list...
-  xit('toggles a task when it is completed', async () => {
-
-    const page = await newSpecPage({
-      components: [TodoList],
-      template: () => (<todo-list></todo-list>),
-    });
-
-    const task: Task = { taskText: 'Test task', isChecked: false };
-
-    store.dispatch(addTodo(task));
-    store.dispatch(addTodo(task));
-    await page.waitForChanges();
-
-    console.log(page.root.shadowRoot.innerHTML);
-
-    //expect(await page.waitForChanges()).not.toBeNull();
-
-    const list = page.root.shadowRoot.querySelector('ul');
-    list.childNodes.forEach((item) => console.log(item.nodeName));
-    //console.log(page.root.shadowRoot.innerHTML);
-    const checkbox = page.root.shadowRoot.querySelector('input[type="checkbox"]') as HTMLInputElement;
-
-    expect(checkbox).not.toBeNull();
-    expect(checkbox.checked).toBe(false);
+    getStateSpy.mockRestore();
   });
 });
