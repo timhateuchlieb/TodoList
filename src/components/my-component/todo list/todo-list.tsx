@@ -16,7 +16,6 @@ export class TodoList {
   private unsubscribe: Unsubscribe = null;
 
   componentWillLoad() {
-    console.log('COMPONENT WILL LOAD')
     this.unsubscribe = store.subscribe(() => {
       const state = store.getState();
       this.tasks = [...state.todos];
@@ -25,7 +24,6 @@ export class TodoList {
   }
 
   disconnectedCallback() {
-    console.log('DISCONNECTED CALLBACK');
     if (this.unsubscribe) {
       console.log('unsubscribe', this.instance);
       this.unsubscribe();
