@@ -30,15 +30,13 @@ describe('todo-item', () => {
 
     const checkbox = page.root.shadowRoot.querySelector('input[type="checkbox"]') as HTMLInputElement;
 
-    console.log(page.root.shadowRoot.innerHTML)
-
     expect(checkbox).not.toBeNull();
     expect(page.root.shadowRoot.querySelector('div')).not.toBeNull();
     expect(checkbox.checked).toBe(false);
     expect(page.root.shadowRoot.querySelector('p').textContent).toBe(task.taskText);
   });
 
-  it('calls CheckboxChange when the checkbox is clicked', async () => {
+  it('calls CheckboxChange method when the checkbox is clicked', async () => {
     const task: Task = { taskText: 'Test task', isChecked: false };
 
     store.dispatch = jest.fn();
