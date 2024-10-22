@@ -11,10 +11,6 @@ export class TodoItem {
 
   @Event() todoCompleted: EventEmitter<Task>;
 
-  componentWillLoad() {
-    console.log('Item Loaded')
-  }
-
   handleCheckboxChange() {
     this.todoCompleted.emit(this.task);
   }

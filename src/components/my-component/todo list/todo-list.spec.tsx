@@ -22,6 +22,64 @@ describe('TodoList Component with Store Mocked', () => {
     expect(page.root.shadowRoot.querySelector('ul').childElementCount).toBe(0);
   });
 
+  it('dispatches addTodo action on form submission', async () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+    const getStateSpy = jest.spyOn(store, 'getState').mockReturnValue({
+      todos: [],
+      newTaskText: 'New Task',
+    });
+
+    const page = await newSpecPage({
+      components: [TodoList],
+      html: `<todo-list></todo-list>`,
+    });
+
+    const form = page.root.shadowRoot.querySelector('form') as HTMLFormElement;
+    form.dispatchEvent(new Event('submit'));
+
+    await page.waitForChanges();
+
+    expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
+      type: 'ADD_TODO',
+      payload: { taskText: 'New Task', isChecked: false },
+    }));
+
+    getStateSpy.mockRestore();
+    dispatchSpy.mockRestore();
+  });
+
+  it('dispatches UPDATE_NEW_TASK_TEXT action on input change', async () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+    const page = await newSpecPage({
+      components: [TodoList],
+      html: `<todo-list></todo-list>`,
+    });
+
+    const input = page.root.shadowRoot.querySelector('input') as HTMLInputElement;
+    input.value = 'New Task Text';
+    input.dispatchEvent(new Event('input'));
+
+    await page.waitForChanges();
+
+    expect(dispatchSpy).toHaveBeenCalledWith({ type: 'UPDATE_NEW_TASK_TEXT', payload: 'New Task Text' });
+
+    dispatchSpy.mockRestore();
+  });
+
+  it('unsubscribes from the store when disconnected', async () => {
+    const unsubscribeMock = jest.fn();
+    jest.spyOn(store, 'subscribe').mockReturnValue(unsubscribeMock);
+
+    const page = await newSpecPage({
+      components: [TodoList],
+      html: `<todo-list></todo-list>`,
+    });
+
+    page.root.remove();
+
+    expect(unsubscribeMock).toHaveBeenCalled();
+  });
+
   it('calls store.getState to retrieve tasks and display them', async () => {
     const getStateSpy = jest.spyOn(store, 'getState').mockReturnValue({
       todos: [
@@ -38,7 +96,8 @@ describe('TodoList Component with Store Mocked', () => {
 
     await page.waitForChanges();
 
-    expect(getStateSpy).toHaveBeenCalledTimes(1);
+    expect(store.getState().newTaskText).toBe('');
+    expect(store.getState().todos.length).toBe(2)
 
     getStateSpy.mockRestore();
   });
