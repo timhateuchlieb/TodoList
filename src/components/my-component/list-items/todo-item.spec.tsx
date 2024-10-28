@@ -2,7 +2,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { TodoItem } from './todo-item';
 import { Task } from '../todo list/task';
 import { h } from '@stencil/core';
-import { store, toggleTodo } from '../../../reduxStore/store';
+import { store } from '../../../reduxStore/store';
 
 jest.mock('../../../reduxStore/store', () => ({
   store: {
@@ -70,7 +70,7 @@ describe('todo-item', () => {
     handleCheckboxChangeSpy.mockRestore();
   });
 
-  it('updates when the task prop changes', async () => {  //✅
+  it('updates the UI when the task prop changes', async () => {
     const initialTask: Task = { taskText: 'Initial Task', isChecked: false };
     const updatedTask: Task = { taskText: 'Updated Task', isChecked: true };
 
@@ -78,6 +78,8 @@ describe('todo-item', () => {
       components: [TodoItem],
       template: () => <todo-item task={initialTask}></todo-item>,
     });
+
+    await page.waitForChanges();
 
     expect(page.root.shadowRoot.querySelector('p').textContent).toBe('Initial Task');
     expect((page.root.shadowRoot.querySelector('input[type="checkbox"]') as HTMLInputElement).checked).toBe(false);
@@ -87,5 +89,6 @@ describe('todo-item', () => {
 
     expect(page.root.shadowRoot.querySelector('p').textContent).toBe('Updated Task');
     expect((page.root.shadowRoot.querySelector('input[type="checkbox"]') as HTMLInputElement).checked).toBe(true);
+    expect(page.rootInstance.task).toEqual(updatedTask);
   });
 });

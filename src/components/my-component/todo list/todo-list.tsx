@@ -1,4 +1,4 @@
-import { Component, ComponentInterface, h, State } from '@stencil/core';
+import { Component, h, State } from '@stencil/core';
 import { addTodo, store, toggleTodo } from '../../../reduxStore/store';
 import { Task } from './task';
 import { Unsubscribe } from 'redux';
