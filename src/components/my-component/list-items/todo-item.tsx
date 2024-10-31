@@ -12,7 +12,6 @@ export class TodoItem {
   @Event() todoCompleted: EventEmitter<Task>;
 
   handleCheckboxChange() {
-    this.task.isChecked = !this.task.isChecked;
     this.todoCompleted.emit(this.task);
   }
 
