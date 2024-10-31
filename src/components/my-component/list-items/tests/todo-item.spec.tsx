@@ -1,10 +1,10 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { TodoItem } from './todo-item';
-import { Task } from '../todo list/task';
+import { TodoItem } from '../todo-item';
+import { Task } from '../../todo list/task';
 import { h } from '@stencil/core';
-import { store } from '../../../reduxStore/store';
+import { store } from '../../../../reduxStore/store';
 
-jest.mock('../../../reduxStore/store', () => ({
+jest.mock('../../../../reduxStore/store', () => ({
   store: {
     dispatch: jest.fn(),
     getState: jest.fn(() => ({
