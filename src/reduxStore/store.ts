@@ -1,25 +1,20 @@
 import { createStore } from 'redux';
 import { Task } from '../components/my-component/todo list/task';
 
-// Define the structure of your state
 export interface TodoState {
   todos: Task[];
   newTaskText: string;
 }
 
-// Initial state
 const initialState: TodoState = {
   todos: [],
   newTaskText: '',
 };
 
-// Actions
 const ADD_TODO = 'ADD_TODO';
 const TOGGLE_TODO = 'TOGGLE_TODO';
 const UPDATE_NEW_TASK_TEXT = 'UPDATE_NEW_TASK_TEXT';
-const RESET_STORE = 'RESET_STORE';
 
-// Action creators
 export const addTodo = (task: Task) => ({
   type: ADD_TODO,
   payload: task,
@@ -34,10 +29,6 @@ export const updateNewTaskText = (text: string) => ({
   type: UPDATE_NEW_TASK_TEXT,
   payload: text,
 });
-
-export const resetStore = () => ({
-  type: RESET_STORE,
-})
 
 // Reducer
 function todoReducer(state = initialState, action): TodoState {
@@ -64,20 +55,10 @@ function todoReducer(state = initialState, action): TodoState {
         ...state,
         newTaskText: action.payload,
       };
-
-      /*
-    case RESET_STORE:
-      console.log('RESET_STORE');
-      return {
-        ...initialState,
-      };
-
-       */
     default:
       return state;
   }
 }
 
-// Create the Redux store
 export const store = createStore(todoReducer);
 

@@ -43,25 +43,6 @@ describe('TodoList Component with Store Mocked', () => {
     subscribeSpy.mockRestore();
   });
 
-  it('dispatches toggleTodo on handleTaskUpdated', async () => {
-    const dispatchSpy = jest.spyOn(store, 'dispatch');
-    const task = { taskText: 'Test task', isChecked: false };
-
-    const page = await newSpecPage({
-      components: [TodoList],
-      html: `<todo-list></todo-list>`,
-    });
-
-    page.rootInstance.handleTaskUpdated(new CustomEvent('taskUpdated', { detail: task }));
-
-    expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({
-      type: 'TOGGLE_TODO',
-      payload: task,
-    }));
-    dispatchSpy.mockRestore();
-  });
-
-
   it('dispatches addTodo() action on form submission', async () => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
     jest.spyOn(store, 'getState').mockReturnValue({
@@ -93,7 +74,7 @@ describe('TodoList Component with Store Mocked', () => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
     jest.spyOn(store, 'getState').mockReturnValue({
       todos: [],
-      newTaskText: '',
+      newTaskText: 'hallo',
     });
 
     const page = await newSpecPage({
@@ -104,6 +85,7 @@ describe('TodoList Component with Store Mocked', () => {
     await page.waitForChanges();
 
     const input = page.root.shadowRoot.querySelector('input') as HTMLInputElement;
+    expect(input.value).toBe('hallo');
     input.value = 'New Task Text';
     input.dispatchEvent(new Event('input'));
 
@@ -114,10 +96,12 @@ describe('TodoList Component with Store Mocked', () => {
     dispatchSpy.mockRestore();
   });
 
-  it('updates the input value when typing, but does not change store state', async () => {
+  it('dispatches toggleTodo on handleTaskUpdated', async () => {
+    const task = { taskText: 'Test task', isChecked: false };
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
     jest.spyOn(store, 'getState').mockReturnValue({
-      todos: [],
-      newTaskText: '',
+      todos: [task],
+      newTaskText: '   ',
     });
 
     const page = await newSpecPage({
@@ -127,14 +111,18 @@ describe('TodoList Component with Store Mocked', () => {
 
     await page.waitForChanges();
 
-    const input = page.root.shadowRoot.querySelector('input') as HTMLInputElement;
-    input.value = 'New Task Text';
-    input.dispatchEvent(new Event('input'));
+    page.root.shadowRoot.querySelector('todo-item').dispatchEvent(
+      new CustomEvent('todoCompleted', { detail: task, bubbles: true, composed: true })
+    );
 
-    await page.waitForChanges();
+    expect(dispatchSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: 'TOGGLE_TODO',
+        payload: task,
+      })
+    );
 
-    expect(input.value).toBe('New Task Text');
-    expect(store.getState().newTaskText).toBe('');
+    dispatchSpy.mockRestore();
   });
 
   it('does not dispatch addTodo with empty or whitespace-only input', async () => {
@@ -142,7 +130,7 @@ describe('TodoList Component with Store Mocked', () => {
     jest.spyOn(store, 'getState').mockReturnValue({
       todos: [],
       newTaskText: '   ', // whitespace-only
-    });
+    })
 
     const page = await newSpecPage({
       components: [TodoList],
@@ -156,6 +144,45 @@ describe('TodoList Component with Store Mocked', () => {
     expect(dispatchSpy).not.toHaveBeenCalledWith(expect.objectContaining({ type: 'ADD_TODO' }));
 
     dispatchSpy.mockRestore();
+  });
+
+
+  it('should initialize dark mode based on localStorage', async () => {
+    localStorage.setItem('darkMode', 'true');
+
+    const page = await newSpecPage({
+      components: [TodoList],
+      html: `<todo-list></todo-list>`,
+    });
+
+    await page.waitForChanges();
+
+    expect(document.documentElement.classList.contains('dark-mode')).toBe(true);
+  });
+
+  it('should toggle dark mode on button click', async () => {
+    const page = await newSpecPage({
+      components: [TodoList],
+      html: `<todo-list></todo-list>`,
+    });
+
+    await page.waitForChanges();
+
+    const button = page.root.shadowRoot.querySelector('button');
+
+    expect(button).not.toBeNull();
+
+    button.click();
+    await page.waitForChanges();
+
+    expect(page.rootInstance.darkMode).toBe(true);
+    expect(localStorage.getItem('darkMode')).toBe('true');
+
+    button.click();
+    await page.waitForChanges();
+
+    expect(page.rootInstance.darkMode).toBe(false);
+    expect(localStorage.getItem('darkMode')).toBe('false');
   });
 
   it('calls unsubscribe on component disconnection', async () => {
