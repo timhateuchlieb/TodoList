@@ -1,4 +1,4 @@
-import { Component, h, State } from '@stencil/core';
+import { Component, Element, h, State } from '@stencil/core';
 import { addTodo, store, toggleTodo } from '../../../reduxStore/store';
 import { Task } from './task';
 import { Unsubscribe } from 'redux';
@@ -10,22 +10,50 @@ import { Unsubscribe } from 'redux';
 })
 export class TodoList {
   @State() tasks: Task[] = [];
+  @State() darkMode: boolean = false;
 
-  private instance = Math.random();
+  @Element() hostElement: HTMLElement;
 
   private unsubscribe: Unsubscribe = null;
 
   componentWillLoad() {
+    const initialState = store.getState();
+    this.tasks = [...initialState.todos];
+    this.syncWithStore();
+    this.initializeDarkMode();
+  }
+
+  syncWithStore() {
     this.unsubscribe = store.subscribe(() => {
       const state = store.getState();
       this.tasks = [...state.todos];
     });
-    console.log(store);
+  }
+
+  initializeDarkMode() {
+    this.darkMode = localStorage.getItem('darkMode') === 'true';
+    this.applyDarkMode();
+  }
+
+  toggleDarkMode() {
+    this.darkMode = !this.darkMode;
+    this.applyDarkMode();
+    localStorage.setItem('darkMode', String(this.darkMode));
+  }
+
+  applyDarkMode() {
+    const rootElement = document.documentElement;
+    rootElement.classList.toggle('dark-mode', this.darkMode);
+
+    if (this.darkMode) {
+      this.hostElement.classList.add('dark-mode');
+    } else {
+      this.hostElement.classList.remove('dark-mode');
+    }
   }
 
   disconnectedCallback() {
     if (this.unsubscribe) {
-      console.log('unsubscribe', this.instance);
       this.unsubscribe();
     }
   }
@@ -40,7 +68,6 @@ export class TodoList {
   }
 
   handleTaskUpdated(event: CustomEvent<Task>) {
-    console.log('TodoList handleTaskUpdated');
     const updatedTask = event.detail;
     store.dispatch(toggleTodo(updatedTask));
   }
@@ -51,9 +78,11 @@ export class TodoList {
   }
 
   render() {
-    console.log('rendering tasks ', this.tasks, 'on instance', this.instance);
     return (
       <div>
+        <button onClick={() => this.toggleDarkMode()}>
+          {this.darkMode ? 'Light Mode' : 'Dark Mode'}
+        </button>
         <h1>To-Do List</h1>
         <p>Tasks left: {this.tasks.filter(task => !task.isChecked).length}</p>
         <form onSubmit={(event) => this.handleFormSubmit(event)}>
