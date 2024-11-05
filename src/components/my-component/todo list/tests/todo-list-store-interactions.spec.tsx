@@ -79,7 +79,7 @@ describe('TodoList Store Interactions', () => {
     dispatchSpy.mockRestore();
   });
 
-  it('dispatches UPDATE_NEW_TASK_TEXT action on input change', async () => {
+  it('dispatches updateNewTaskText action on input change', async () => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
     jest.spyOn(store, 'getState').mockReturnValue({
       todos: [],

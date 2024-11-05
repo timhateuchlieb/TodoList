@@ -1,5 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { TodoList } from '../todo-list';
+import { store } from '../../../../reduxStore/store';
 
 describe('TodoList Dark Mode', () => {
   beforeEach(() => {
@@ -13,10 +14,13 @@ describe('TodoList Dark Mode', () => {
       html: `<todo-list></todo-list>`,
     });
     await page.waitForChanges();
-    expect(document.documentElement.classList.contains('dark-mode')).toBe(true);
-  });
+    expect(document.documentElement.classList.contains('darkMode')).toBe(true);
+  })
 
   it('should toggle dark mode on button click', async () => {
+
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+
     const page = await newSpecPage({
       components: [TodoList],
       html: `<todo-list></todo-list>`,
@@ -25,12 +29,12 @@ describe('TodoList Dark Mode', () => {
     const button = page.root.shadowRoot.querySelector('button');
     button.click(); // Toggle on
     await page.waitForChanges();
-    expect(page.rootInstance.darkMode).toBe(true);
+    expect(dispatchSpy).toHaveBeenCalled();
     expect(localStorage.getItem('darkMode')).toBe('true');
 
     button.click(); // Toggle off
     await page.waitForChanges();
-    expect(page.rootInstance.darkMode).toBe(false);
+    expect(dispatchSpy).toHaveBeenCalledTimes(2);
     expect(localStorage.getItem('darkMode')).toBe('false');
   });
 });

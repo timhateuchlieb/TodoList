@@ -16,18 +16,14 @@ body {
   color: var(--text-color-light);
 }
 
-.dark-mode body {
+.darkMode body {
   background-color: var(--bg-color-dark);
   color: var(--text-color-dark);
 }
 
-.dark-mode h1, .dark-mode p, .dark-mode button, .dark-mode input {
+.darkMode h1, .darkMode p, .darkMode button, .darkMode input {
   color: var(--text-color-dark);
   background-color: var(--bg-color-dark);
   border-color: var(--text-color-dark);
 }
 
-button {
-  align-content: normal;
-  justify-content: normal;
-}
