@@ -1,5 +1,5 @@
 import { Component, Element, h, State } from '@stencil/core';
-import { addTodo, store, toggleTodo } from '../../../reduxStore/store';
+import { addTodo, store, toggleTodo, toggleDarkMode } from '../../../reduxStore/store';
 import { Task } from './task';
 import { Unsubscribe } from 'redux';
 
@@ -17,39 +17,25 @@ export class TodoList {
   private unsubscribe: Unsubscribe = null;
 
   componentWillLoad() {
-    const initialState = store.getState();
-    this.tasks = [...initialState.todos];
-    this.syncWithStore();
-    this.initializeDarkMode();
-  }
-
-  syncWithStore() {
+    this.syncWithStore()
+    this.applyDarkMode(store.getState().darkMode);
     this.unsubscribe = store.subscribe(() => {
-      const state = store.getState();
-      this.tasks = [...state.todos];
+    this.syncWithStore()
+    this.applyDarkMode(store.getState().darkMode);
     });
   }
 
-  initializeDarkMode() {
-    this.darkMode = localStorage.getItem('darkMode') === 'true';
-    this.applyDarkMode();
+  syncWithStore() {
+      const state = store.getState();
+      this.tasks = [...state.todos];
   }
 
   toggleDarkMode() {
-    this.darkMode = !this.darkMode;
-    this.applyDarkMode();
-    localStorage.setItem('darkMode', String(this.darkMode));
+    store.dispatch(toggleDarkMode());
   }
 
-  applyDarkMode() {
-    const rootElement = document.documentElement;
-    rootElement.classList.toggle('dark-mode', this.darkMode);
-
-    if (this.darkMode) {
-      this.hostElement.classList.add('dark-mode');
-    } else {
-      this.hostElement.classList.remove('dark-mode');
-    }
+  applyDarkMode(isDarkMode: boolean) {
+    document.documentElement.classList.toggle('darkMode', isDarkMode);
   }
 
   disconnectedCallback() {

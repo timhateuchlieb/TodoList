@@ -3,14 +3,9 @@
   --text-color: black;
 }
 
-:host(.dark-mode) {
+:host(.darkMode) {
   --background-color: #2c2c2c;
   --text-color: #e0e0e0;
-}
-
-div {
-  background-color: var(--background-color);
-  color: var(--text-color);
 }
 
 button {
@@ -27,9 +22,5 @@ input {
 }
 
 input::placeholder {
-  color: var(--text-color);
-}
-
-h1, p {
   color: var(--text-color);
 }
