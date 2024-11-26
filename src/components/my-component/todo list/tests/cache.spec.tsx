@@ -1,5 +1,6 @@
-import { addTodo, store, toggleTodo } from '../../../../reduxStore/store';
 import { Task } from '../task';
+import store from '../../../../reduxStore/store/store';
+import { addTodo, toggleTodo } from '../../../../reduxStore/actions/actions';
 
 describe('Redux Store Persistence with localStorage', () => {
 

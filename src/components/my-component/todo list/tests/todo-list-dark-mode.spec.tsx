@@ -1,6 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { TodoList } from '../todo-list';
-import { store } from '../../../../reduxStore/store';
+import store from '../../../../reduxStore/store/store';
+
 
 describe('TodoList Dark Mode', () => {
   beforeEach(() => {

@@ -1,4 +1,6 @@
-import { addTodo, store, toggleTodo, updateNewTaskText } from '../store';
+import store from '../store/store';
+import { updateNewTaskText, addTodo, toggleTodo } from '../actions/actions';
+
 
 describe('Redux Store', () => {
   it('should return the initial state', () => {

@@ -1,6 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { store } from '../../../../reduxStore/store';
+
 import { TodoList } from '../todo-list';
+import store from '../../../../reduxStore/store/store';
 
 describe('TodoList Store Interactions', () => {
   beforeEach(() => {
@@ -12,6 +13,7 @@ describe('TodoList Store Interactions', () => {
     jest.spyOn(store, 'getState').mockReturnValue({
       todos: [],
       newTaskText: 'New Task',
+      darkMode: false,
     });
 
     const page = await newSpecPage({
@@ -36,6 +38,7 @@ describe('TodoList Store Interactions', () => {
     jest.spyOn(store, 'getState').mockReturnValue({
       todos: [],
       newTaskText: '   ',
+      darkMode: false,
     })
 
     const page = await newSpecPage({
@@ -58,6 +61,7 @@ describe('TodoList Store Interactions', () => {
     jest.spyOn(store, 'getState').mockReturnValue({
       todos: [task],
       newTaskText: '',
+      darkMode: false,
     });
 
     const page = await newSpecPage({
@@ -84,6 +88,7 @@ describe('TodoList Store Interactions', () => {
     jest.spyOn(store, 'getState').mockReturnValue({
       todos: [],
       newTaskText: 'hallo',
+      darkMode: false,
     });
 
     const page = await newSpecPage({
