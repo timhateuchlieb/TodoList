@@ -5,7 +5,7 @@ export function* toggleDarkModeSagaEffects() {
   const newDarkModeState = !isDarkModeEnabled;
 
   localStorage.setItem('darkMode', String(newDarkModeState));
-  document.documentElement.classList.toggle('dark-mode', newDarkModeState);
+  document.documentElement.classList.toggle('darkMode', newDarkModeState);
 
   console.log(`Dark mode toggled to: ${newDarkModeState}`);
 }
