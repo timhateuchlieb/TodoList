@@ -1,6 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { store } from '../../../../reduxStore/store';
 import { TodoList } from '../todo-list';
+import store from '../../../../reduxStore/store/store';
 
 describe('TodoList Component Subscription', () => {
   it('subscribes to store updates on load', async () => {
@@ -9,6 +9,7 @@ describe('TodoList Component Subscription', () => {
     jest.spyOn(store, 'getState').mockReturnValue({
       todos: [{ taskText: 'Task 1', isChecked: false }],
       newTaskText: '',
+      darkMode: false,
     });
 
     await newSpecPage({

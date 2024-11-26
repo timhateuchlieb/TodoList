@@ -1,0 +1,6 @@
+export const ADD_TODO = 'ADD_TODO';
+export const TOGGLE_TODO = 'TOGGLE_TODO';
+export const UPDATE_NEW_TASK_TEXT = 'UPDATE_NEW_TASK_TEXT';
+export const TOGGLE_DARK_MODE = 'TOGGLE_DARK_MODE';
+export const DELETE_TODO = 'DELETE_TODO';
+export const DELETE_TODO_ASYNC = 'DELETE_TODO_ASYNC';

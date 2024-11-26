@@ -1,7 +1,8 @@
 import { Component, Element, h, State } from '@stencil/core';
-import { addTodo, store, toggleTodo, toggleDarkMode } from '../../../reduxStore/store';
 import { Task } from './task';
 import { Unsubscribe } from 'redux';
+import store from '../../../reduxStore/store/store';
+import { addTodo, toggleTodo, toggleDarkMode } from '../../../reduxStore/actions/actions';
 
 @Component({
   tag: 'todo-list',
@@ -18,24 +19,19 @@ export class TodoList {
 
   componentWillLoad() {
     this.syncWithStore()
-    this.applyDarkMode(store.getState().darkMode);
     this.unsubscribe = store.subscribe(() => {
     this.syncWithStore()
-    this.applyDarkMode(store.getState().darkMode);
     });
   }
 
   syncWithStore() {
       const state = store.getState();
       this.tasks = [...state.todos];
+      this.darkMode = store.getState().darkMode;
   }
 
   toggleDarkMode() {
     store.dispatch(toggleDarkMode());
-  }
-
-  applyDarkMode(isDarkMode: boolean) {
-    document.documentElement.classList.toggle('darkMode', isDarkMode);
   }
 
   disconnectedCallback() {

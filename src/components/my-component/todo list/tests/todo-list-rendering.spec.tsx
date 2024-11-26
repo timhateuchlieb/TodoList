@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
-import { store } from '../../../../reduxStore/store';
+
 import { TodoList } from '../todo-list';
+import store from '../../../../reduxStore/store/store';
 
 describe('TodoList Component Rendering', () => {
   beforeEach(() => {
@@ -12,6 +13,7 @@ describe('TodoList Component Rendering', () => {
     jest.spyOn(store, 'getState').mockReturnValue({
       todos: [],
       newTaskText: '',
+      darkMode: false,
     });
 
     const page = await newSpecPage({
