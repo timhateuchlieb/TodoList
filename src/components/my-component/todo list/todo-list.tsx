@@ -2,7 +2,8 @@ import { Component, Element, h, State } from '@stencil/core';
 import { Task } from './task';
 import { Unsubscribe } from 'redux';
 import store from '../../../reduxStore/store/store';
-import { addTodo, toggleTodo, toggleDarkMode } from '../../../reduxStore/actions/actions';
+import { addTodo, toggleTodo, toggleDarkMode, readFromLocalStorage } from '../../../reduxStore/actions/actions';
+import { selectAllTodos, selectDarkModeState, selectNewTaskText, } from '../../../selectors/selectorSelector';
 
 @Component({
   tag: 'todo-list',
@@ -18,16 +19,16 @@ export class TodoList {
   private unsubscribe: Unsubscribe = null;
 
   componentWillLoad() {
-    this.syncWithStore()
+    store.dispatch(readFromLocalStorage);
+    this.syncWithStore();
     this.unsubscribe = store.subscribe(() => {
-    this.syncWithStore()
+      this.syncWithStore();
     });
   }
 
   syncWithStore() {
-      const state = store.getState();
-      this.tasks = [...state.todos];
-      this.darkMode = store.getState().darkMode;
+    this.tasks = selectAllTodos();
+    this.darkMode = selectDarkModeState();
   }
 
   toggleDarkMode() {
@@ -42,9 +43,8 @@ export class TodoList {
 
   handleFormSubmit(event: Event) {
     event.preventDefault();
-    const newTaskText = store.getState().newTaskText;
-    if (newTaskText.trim()) {
-      const task = new Task(newTaskText);
+    if (selectNewTaskText().trim()) {
+      const task = new Task(selectNewTaskText());
       store.dispatch(addTodo(task));
     }
   }
@@ -61,7 +61,7 @@ export class TodoList {
 
   render() {
     return (
-      <div>
+      <div class={this.darkMode ? 'dark' : 'light'}>
         <button onClick={() => this.toggleDarkMode()}>
           {this.darkMode ? 'Light Mode' : 'Dark Mode'}
         </button>
@@ -70,7 +70,7 @@ export class TodoList {
         <form onSubmit={(event) => this.handleFormSubmit(event)}>
           <input
             type="text"
-            value={store.getState().newTaskText}
+            value={selectNewTaskText()}
             onInput={(event) => this.handleInputChange(event)}
             placeholder="Add a new task"
             required

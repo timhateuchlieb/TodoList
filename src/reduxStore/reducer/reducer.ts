@@ -1,4 +1,11 @@
-import { ADD_TODO, TOGGLE_TODO, UPDATE_NEW_TASK_TEXT, TOGGLE_DARK_MODE, DELETE_TODO } from '../actions/actionTypes';
+import {
+  ADD_TODO,
+  TOGGLE_TODO,
+  UPDATE_NEW_TASK_TEXT,
+  TOGGLE_DARK_MODE,
+  DELETE_TODO,
+  READ_FROM_LOCAL_STORAGE,
+} from '../actions/actionTypes';
 import { TodoState } from '../store/store';
 
 const initialState: TodoState = {
@@ -38,6 +45,15 @@ function todoReducer(state = initialState, action): TodoState {
       return {
         ...state,
         todos: state.todos.filter(todo => todo.taskText !== action.payload.taskText),
+      };
+    case READ_FROM_LOCAL_STORAGE:
+      const persistedTodos = localStorage.getItem('todos');
+      const persistedDarkMode = localStorage.getItem('darkMode');
+
+      return {
+        ...state,
+        todos: persistedTodos ? JSON.parse(persistedTodos) : state.todos,
+        darkMode: persistedDarkMode === 'true',
       };
     default:
       return state;
