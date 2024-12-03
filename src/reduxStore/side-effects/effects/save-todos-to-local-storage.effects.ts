@@ -1,7 +1,6 @@
-import store, { TodoState } from '../../store/store';
+import { selectAllTodos } from '../../../selectors/selectorSelector';
 
 export function* saveTodosToLocalStorageEffects() {
   console.log('saveTodosToLocalStorageEffects');
-  const state: TodoState = yield store.getState;
-  localStorage.setItem('todoState', JSON.stringify(state.todos));
+  localStorage.setItem('todoState', JSON.stringify(yield selectAllTodos));
 }
