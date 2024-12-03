@@ -19,11 +19,10 @@ export const config: Config = {
       type: 'www',
       serviceWorker: null,
       copy: [
-        { src: 'script.js', dest: '' },
-        { src: 'style.css', dest: '' },
-        { src: 'todo-item.css', dest: '' },
-        { src: 'todo-list.css', dest: '' },
-      ],
+        { src: 'src/components/my-component/todo-list/todo-list.css', dest: 'todo-list.css' },
+        { src: 'src/components/my-component/list-items/todo-item.css', dest: 'todo-item.css' },
+        { src: 'src/components/my-component/style.css', dest: 'style.css' }
+      ]
     },
   ],
   testing: {
