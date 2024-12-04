@@ -19,9 +19,9 @@ export const config: Config = {
       type: 'www',
       serviceWorker: null,
       copy: [
-        { src: 'src/components/my-component/todo-list/todo-list.css', dest: 'todo-list.css' },
-        { src: 'src/components/my-component/list-items/todo-item.css', dest: 'todo-item.css' },
-        { src: 'src/components/my-component/style.css', dest: 'style.css' }
+        { src: 'components/my-component/todo-list/todo-list.css', dest: 'todo-list.css' },
+        { src: 'components/my-component/list-items/todo-item.css', dest: 'todo-item.css' },
+        { src: 'components/my-component/style.css', dest: 'style.css' }
       ]
     },
   ],
