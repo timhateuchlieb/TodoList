@@ -20,7 +20,7 @@ export class TodoList {
 
   componentWillLoad() {
     console.log('Component will load');
-    store.dispatch(readFromLocalStorage);
+    store.dispatch(readFromLocalStorage());
     this.syncWithStore();
     this.unsubscribe = store.subscribe(() => {
       console.log('Store updated, syncing...');
