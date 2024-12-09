@@ -49,10 +49,20 @@ function todoReducer(state = initialState, action): TodoState {
     case READ_FROM_LOCAL_STORAGE:
       const persistedState = localStorage.getItem('todoState');
       const persistedDarkMode = localStorage.getItem('darkMode');
+      
+      let todos = [];
+      try {
+        if (persistedState) {
+          const parsed = JSON.parse(persistedState);
+          todos = parsed.todos || [];
+        }
+      } catch (error) {
+        console.error('Failed to parse persisted state:', error);
+      }
 
       return {
         ...state,
-        todos: persistedState ? JSON.parse(persistedState).todos : [],
+        todos,
         newTaskText: '',
         darkMode: persistedDarkMode === 'true'
       };
