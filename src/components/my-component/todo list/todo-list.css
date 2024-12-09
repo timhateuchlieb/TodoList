@@ -11,6 +11,13 @@ html, body {
   --text-color-dark: #e0e0e0;
 }
 
+:host {
+  --bg-color-light: #ffffff;
+  --text-color-light: #000000;
+  --bg-color-dark: #2c2c2c;
+  --text-color-dark: #e0e0e0;
+}
+
 body {
   background-color: var(--bg-color-light);
   color: var(--text-color-light);
@@ -25,4 +32,32 @@ body {
   color: var(--text-color-dark);
   background-color: var(--bg-color-dark);
   border-color: var(--text-color-dark);
+}
+
+:host(.dark) {
+  background-color: var(--bg-color-dark);
+  color: var(--text-color-dark);
+}
+
+:host(.dark) button,
+:host(.dark) input {
+  color: var(--text-color-dark);
+  background-color: var(--bg-color-dark);
+  border-color: var(--text-color-dark);
+}
+
+.theme-toggle {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.theme-toggle svg {
+  fill: currentColor;
+  transition: fill 0.3s ease;
+}
+
+:host(.dark) .theme-toggle svg {
+  fill: var(--text-color-dark);
 }
