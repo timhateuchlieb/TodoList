@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A simple to-do list application">
   <title>To-Do List</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <script type="module" src="/build/component.esm.js"></script>
   <script nomodule src="/build/component.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<div class="container">
-  <todo-list></todo-list>
-</div>
+  <div class="container" role="main">
+    <todo-list aria-label="Todo list"></todo-list>
+  </div>
+  <noscript>
+    <p>Please enable JavaScript to use this application.</p>
+  </noscript>
 </body>
+
 </html>
