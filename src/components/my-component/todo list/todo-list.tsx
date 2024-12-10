@@ -13,7 +13,9 @@ import { selectAllTodos, selectDarkModeState, selectNewTaskText, } from '../../.
 export class TodoList {
   @State() tasks: Task[] = [];
   @State() darkMode: boolean = false;
+  @State() newTaskText: string = '';
 
+  
   @Element() hostElement: HTMLElement;
 
   private unsubscribe: Unsubscribe = null;
@@ -32,6 +34,7 @@ export class TodoList {
     console.log('Syncing with store');
     this.tasks = selectAllTodos();
     this.darkMode = selectDarkModeState();
+    this.newTaskText = selectNewTaskText();
     console.log('Current tasks:', this.tasks);
     console.log('Dark mode:', this.darkMode);
   }
@@ -78,7 +81,7 @@ export class TodoList {
         <form onSubmit={(event) => this.handleFormSubmit(event)}>
           <input
             type="text"
-            value={selectNewTaskText()}
+            value={this.newTaskText}
             onInput={(event) => this.handleInputChange(event)}
             placeholder="Add a new task"
             required

@@ -47,24 +47,9 @@ function todoReducer(state = initialState, action): TodoState {
         todos: state.todos.filter(todo => todo.taskText !== action.payload.taskText),
       };
     case READ_FROM_LOCAL_STORAGE:
-      const persistedState = localStorage.getItem('todoState');
-      const persistedDarkMode = localStorage.getItem('darkMode');
-      
-      let todos = [];
-      try {
-        if (persistedState) {
-          const parsed = JSON.parse(persistedState);
-          todos = parsed.todos || [];
-        }
-      } catch (error) {
-        console.error('Failed to parse persisted state:', error);
-      }
-
       return {
         ...state,
-        todos,
-        newTaskText: '',
-        darkMode: persistedDarkMode === 'true'
+        ...action.payload,
       };
     default:
       return state;
