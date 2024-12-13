@@ -1,4 +1,4 @@
-import { Task } from '../../components/my-component/todo list/task';
+import { Task } from '../../components/TodoList/todo list/task';
 import {
   ADD_TODO,
   DELETE_TODO,
@@ -27,7 +27,7 @@ export const toggleDarkMode = () => ({
   type: TOGGLE_DARK_MODE,
 });
 
-export const deleteTodo = (task: Task) => ({    //todo     never used, not implemented a delete jet!
+export const deleteTodo = (task: Task) => ({    //todo     never used, not implemented a delete functionality jet!
   type: DELETE_TODO,
   payload: task,
 });

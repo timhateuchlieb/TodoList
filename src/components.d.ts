@@ -5,8 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { Task } from "./components/my-component/todo list/task";
-export { Task } from "./components/my-component/todo list/task";
+import { Task } from "./components/TodoList/todo list/task";
+export { Task } from "./components/TodoList/todo list/task";
 export namespace Components {
     interface TodoItem {
         "task": Task;
