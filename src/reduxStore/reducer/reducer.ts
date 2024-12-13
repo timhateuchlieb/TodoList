@@ -8,7 +8,7 @@ import {
 } from '../actions/actionTypes';
 import { TodoState } from '../store/store';
 
-const initialState: TodoState = {
+export const initialState: TodoState = {
   todos: [],
   newTaskText: '',
   darkMode: localStorage.getItem('darkMode') === 'true',

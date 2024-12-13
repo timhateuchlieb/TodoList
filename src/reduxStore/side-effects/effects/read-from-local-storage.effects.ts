@@ -1,5 +1,6 @@
 import { put } from '@redux-saga/core/effects';
 import { TodoState } from '../../store/store';
+import { initialState } from '../../reducer/reducer';
 import { READ_FROM_LOCAL_STORAGE } from '../../actions/actionTypes';
 
 export function* readFromLocalStorageEffects() {
@@ -10,7 +11,7 @@ export function* readFromLocalStorageEffects() {
     
     let loadedState: TodoState = initialState;
 
-    if (todoState) {
+    if (todoState && todoState !== 'undefined') {
       const parsedState = JSON.parse(todoState) as TodoState;
       loadedState = {
         ...parsedState,
@@ -31,9 +32,3 @@ export function* readFromLocalStorageEffects() {
     });
   }
 }
-
-const initialState: TodoState = {
-  todos: [],
-  newTaskText: '',
-  darkMode: localStorage.getItem('darkMode') === 'true',
-};

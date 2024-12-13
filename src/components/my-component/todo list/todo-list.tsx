@@ -2,8 +2,8 @@ import { Component, Element, h, State } from '@stencil/core';
 import { Task } from './task';
 import { Unsubscribe } from 'redux';
 import store from '../../../reduxStore/store/store';
-import { addTodo, toggleTodo, toggleDarkMode, readFromLocalStorage } from '../../../reduxStore/actions/actions';
-import { selectAllTodos, selectDarkModeState, selectNewTaskText, } from '../../../selectors/selectorSelector';
+import { addTodo, toggleTodo, toggleDarkMode } from '../../../reduxStore/actions/actions';
+import { selectAllTodos, selectDarkModeState, selectNewTaskText } from '../../../selectors/selectorSelector';
 
 @Component({
   tag: 'todo-list',
@@ -15,14 +15,12 @@ export class TodoList {
   @State() darkMode: boolean = false;
   @State() newTaskText: string = '';
 
-  
   @Element() hostElement: HTMLElement;
 
   private unsubscribe: Unsubscribe = null;
 
   componentWillLoad() {
     console.log('Component will load');
-    store.dispatch(readFromLocalStorage());
     this.syncWithStore();
     this.unsubscribe = store.subscribe(() => {
       console.log('Store updated, syncing...');
@@ -51,9 +49,9 @@ export class TodoList {
 
   handleFormSubmit(event: Event) {
     event.preventDefault();
-    console.log('Form submitted, current text:', selectNewTaskText());
-    if (selectNewTaskText().trim()) {
-      const task = new Task(selectNewTaskText());
+    console.log('Form submitted, current text:', this.newTaskText);
+    if (this.newTaskText.trim()) {
+      const task = new Task(this.newTaskText);
       console.log('Creating new task:', task);
       store.dispatch(addTodo(task));
     }
