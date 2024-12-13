@@ -1,8 +1,6 @@
-
 import { newSpecPage } from '@stencil/core/testing';
 import { TodoList } from '../todo-list';
 import store from '../../../../reduxStore/store/store';
-
 
 describe('TodoList Dark Mode', () => {
   beforeEach(() => {
@@ -17,10 +15,9 @@ describe('TodoList Dark Mode', () => {
     });
     await page.waitForChanges();
     expect(document.documentElement.classList.contains('darkMode')).toBe(true);
-  })
+  });
 
   it('should toggle dark mode on button click', async () => {
-
     const dispatchSpy = jest.spyOn(store, 'dispatch');
 
     const page = await newSpecPage({
