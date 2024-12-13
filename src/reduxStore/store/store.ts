@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import todoReducer from '../reducer/reducer';
 import { rootSaga } from '../side-effects/middleware.saga';
-import { Task } from '../../components/my-component/todo list/task';
+import { Task } from '../../components/TodoList/todo list/task';
 import { selectState } from '../../selectors/selectorSelector';
 
 export interface TodoState {
