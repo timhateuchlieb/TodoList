@@ -1,11 +1,12 @@
 import { put } from '@redux-saga/core/effects';
 import { TodoState } from '../../store/store';
 import { initialState } from '../../reducer/reducer';
-import { READ_FROM_LOCAL_STORAGE } from '../../actions/actionTypes';
+import { READ_FROM_LOCAL_STORAGE_SUCCESS } from '../../actions/actionTypes';
 
 export function* readFromLocalStorageEffects() {
-  console.log('Reading from localStorage');
+  console.log('hihi huhu');
   try {
+    console.log('readFromLocalStorageEffects');
     const todoState = localStorage.getItem('todoState');
     const darkMode = localStorage.getItem('darkMode') === 'true';
     
@@ -20,14 +21,14 @@ export function* readFromLocalStorageEffects() {
     }
 
     yield put({ 
-      type: READ_FROM_LOCAL_STORAGE, 
+      type: READ_FROM_LOCAL_STORAGE_SUCCESS, 
       payload: loadedState 
     });
 
   } catch (error) {
     console.error('Failed to load state from localStorage:', error);
     yield put({ 
-      type: READ_FROM_LOCAL_STORAGE, 
+      type: READ_FROM_LOCAL_STORAGE_SUCCESS, 
       payload: initialState 
     });
   }

@@ -47,6 +47,7 @@ function todoReducer(state = initialState, action): TodoState {
         todos: state.todos.filter(todo => todo.taskText !== action.payload.taskText),
       };
     case READ_FROM_LOCAL_STORAGE:
+      console.log('READ_FROM_LOCAL_STORAGE', action.payload);
       return {
         ...state,
         ...action.payload,
