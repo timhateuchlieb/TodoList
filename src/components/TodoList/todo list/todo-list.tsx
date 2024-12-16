@@ -21,6 +21,7 @@ export class TodoList {
 
   componentWillLoad() {
     console.log('Component will load');
+    //this dispatch never reaches???
     store.dispatch(readFromLocalStorage());
     this.syncWithStore();
     this.unsubscribe = store.subscribe(() => {
