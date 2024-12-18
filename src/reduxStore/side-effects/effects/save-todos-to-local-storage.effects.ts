@@ -1,7 +1,12 @@
-import { selectAllTodos } from '../../../selectors/selectorSelector';
+import { select } from '@redux-saga/core/effects';  
+import { selectState } from '../../../selectors/selectorSelector';
+import { TodoState } from '../../store/store';
 
 export function* saveTodosToLocalStorageEffects() {
-  console.log('saveTodosToLocalStorageEffects');
-  localStorage.setItem('todoState', JSON.stringify(yield selectAllTodos));
-  console.log('Saved to localStorage' + localStorage.getItem('todoState'));
+  try {
+    const state: TodoState = yield select(selectState);
+    localStorage.setItem('todoState', JSON.stringify(state));
+  } catch (error) {
+    console.error('Failed to save state to localStorage:', error);
+  }
 }

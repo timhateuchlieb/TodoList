@@ -29,11 +29,6 @@ export function* readFromLocalStorageEffects() {
         type: 'TOGGLE_DARK_MODE', 
         payload: loadedState.darkMode 
       });
-
-      yield put({ 
-        type: 'UPDATE_ACCORDING_TO_LOCAL_STORAGE', 
-        payload: loadedState 
-      });
     }
 
   } catch (error) {
