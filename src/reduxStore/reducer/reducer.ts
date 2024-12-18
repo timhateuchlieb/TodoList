@@ -53,6 +53,7 @@ function todoReducer(state = initialState, action): TodoState {
       };
   case UPDATE_ACCORDING_TO_LOCAL_STORAGE:
       return {
+        ...state,
         ...action.payload,
       };
     default:

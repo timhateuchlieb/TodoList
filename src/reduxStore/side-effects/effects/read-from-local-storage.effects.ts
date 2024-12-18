@@ -2,6 +2,8 @@ import { put } from '@redux-saga/core/effects';
 import { TodoState } from '../../store/store';
 import { initialState } from '../../reducer/reducer';
 
+let isInitialLoad = true;
+
 export function* readFromLocalStorageEffects() {
   console.log('readFromLocalStorageEffects started');
   try {
@@ -21,15 +23,18 @@ export function* readFromLocalStorageEffects() {
 
     console.log('loadedState', loadedState);
 
-    yield put({ 
-      type: 'TOGGLE_DARK_MODE', 
-      payload: loadedState.darkMode 
-    });
+    if (isInitialLoad) {
+      isInitialLoad = false;
+      yield put({ 
+        type: 'TOGGLE_DARK_MODE', 
+        payload: loadedState.darkMode 
+      });
 
-    yield put({ 
-      type: 'UPDATE_ACCORDING_TO_LOCAL_STORAGE', 
-      payload: loadedState 
-    });
+      yield put({ 
+        type: 'UPDATE_ACCORDING_TO_LOCAL_STORAGE', 
+        payload: loadedState 
+      });
+    }
 
   } catch (error) {
     console.error('Failed to load state from localStorage:', error);
