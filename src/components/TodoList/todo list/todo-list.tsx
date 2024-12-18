@@ -2,7 +2,7 @@ import { Component, Element, h, State } from '@stencil/core';
 import { Task } from './task';
 import { Unsubscribe } from 'redux';
 import store from '../../../reduxStore/store/store';
-import { addTodo, toggleTodo, toggleDarkMode, readFromLocalStorage } from '../../../reduxStore/actions/actions';
+import { addTodo, toggleTodo, toggleDarkMode, updateAccordingToLocalStorage } from '../../../reduxStore/actions/actions';
 import { selectAllTodos, selectDarkModeState, selectNewTaskText } from '../../../selectors/selectorSelector';
 
 @Component({
@@ -21,8 +21,7 @@ export class TodoList {
 
   componentWillLoad() {
     console.log('Component will load');
-    //this dispatch never reaches???
-    store.dispatch(readFromLocalStorage());
+    store.dispatch(updateAccordingToLocalStorage());
     this.syncWithStore();
     this.unsubscribe = store.subscribe(() => {
       console.log('Store updated, syncing...');
