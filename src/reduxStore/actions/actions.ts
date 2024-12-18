@@ -2,7 +2,7 @@ import { Task } from '../../components/TodoList/todo list/task';
 import {
   ADD_TODO,
   DELETE_TODO,
-  READ_FROM_LOCAL_STORAGE,
+  UPDATE_ACCORDING_TO_LOCAL_STORAGE,
   TOGGLE_DARK_MODE,
   TOGGLE_TODO,
   UPDATE_NEW_TASK_TEXT,
@@ -32,6 +32,6 @@ export const deleteTodo = (task: Task) => ({    //todo     never used, not imple
   payload: task,
 });
 
-export const readFromLocalStorage = () => ({
-  type: READ_FROM_LOCAL_STORAGE,
+export const updateAccordingToLocalStorage = () => ({
+  type: UPDATE_ACCORDING_TO_LOCAL_STORAGE,
 });
