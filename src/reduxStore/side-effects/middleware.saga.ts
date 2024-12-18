@@ -5,7 +5,6 @@ import { toggleDarkModeSagaEffects } from './effects/toggle-dark-mode-saga.effec
 import { readFromLocalStorageEffects } from './effects/read-from-local-storage.effects';
 
 export function* rootSaga() {
-  console.log('rootSaga');
   yield takeLatest([ADD_TODO, TOGGLE_TODO], syncLocalStorage);
   yield takeLatest(TOGGLE_DARK_MODE, toggleDarkModeSaga);
   yield takeLatest(UPDATE_ACCORDING_TO_LOCAL_STORAGE, readFromLocalStorage);

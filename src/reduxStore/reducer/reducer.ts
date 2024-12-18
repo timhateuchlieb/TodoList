@@ -52,6 +52,7 @@ function todoReducer(state = initialState, action): TodoState {
         todos: state.todos.filter(todo => todo.taskText !== action.payload.taskText),
       };
   case UPDATE_ACCORDING_TO_LOCAL_STORAGE:
+    console.log('Reducer gets following payload: ' + action.payload);
       return {
         ...state,
         ...action.payload,
