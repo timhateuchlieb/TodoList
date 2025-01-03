@@ -5,9 +5,7 @@ import { initialState } from '../../reducer/reducer';
 let isInitialLoad = true;
 
 export function* readFromLocalStorageEffects() {
-  console.log('readFromLocalStorageEffects started');
   try {
-    console.log('Current localStorage:', localStorage.getItem('todoState'), localStorage.getItem('darkMode'));
     const todoState = localStorage.getItem('todoState');
     const darkMode = localStorage.getItem('darkMode') === 'true';
     
@@ -21,18 +19,15 @@ export function* readFromLocalStorageEffects() {
       };
     }
 
-    console.log('loadedState', loadedState);
-
     if (isInitialLoad) {
       isInitialLoad = false;
       yield put({ 
-        type: 'TOGGLE_DARK_MODE', 
-        payload: loadedState.darkMode 
+        type: 'UPDATE_ACCORDING_TO_LOCAL_STORAGE', 
+        payload: loadedState, 
       });
     }
 
   } catch (error) {
-    console.error('Failed to load state from localStorage:', error);
     yield put({ 
       type: 'UPDATE_ACCORDING_TO_LOCAL_STORAGE', 
       payload: initialState 
