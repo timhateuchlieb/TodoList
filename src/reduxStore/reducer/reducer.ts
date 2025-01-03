@@ -17,14 +17,12 @@ export const initialState: TodoState = {
 function todoReducer(state = initialState, action): TodoState {
   switch (action.type) {
     case ADD_TODO:
-      console.log('Whats insight localStorage? ' + localStorage.getItem('todoState'));
       return {
         ...state,
         todos: [...state.todos, action.payload],
         newTaskText: '',
       };
     case TOGGLE_TODO:
-      console.log('Whats insight localStorage? ' + localStorage.getItem('todoState'));
       return {
         ...state,
         todos: state.todos.map(todo =>
@@ -34,27 +32,22 @@ function todoReducer(state = initialState, action): TodoState {
         ),
       };
     case UPDATE_NEW_TASK_TEXT:
-      console.log('Whats insight localStorage? ' + localStorage.getItem('todoState'));
       return {
         ...state,
         newTaskText: action.payload,
       };
     case TOGGLE_DARK_MODE:
-      console.log('Whats insight localStorage? ' + localStorage.getItem('todoState'));
       return {
         ...state,
         darkMode: !state.darkMode,
       };
     case DELETE_TODO:
-      console.log('Whats insight localStorage? ' + localStorage.getItem('todoState'));
       return {
         ...state,
         todos: state.todos.filter(todo => todo.taskText !== action.payload.taskText),
       };
   case UPDATE_ACCORDING_TO_LOCAL_STORAGE:
-    console.log('Reducer gets following payload: ' + action.payload);
       return {
-        ...state,
         ...action.payload,
       };
     default:
