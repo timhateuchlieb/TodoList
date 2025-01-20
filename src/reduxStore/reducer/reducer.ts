@@ -4,7 +4,8 @@ import {
   UPDATE_NEW_TASK_TEXT,
   TOGGLE_DARK_MODE,
   DELETE_TODO,
-  UPDATE_ACCORDING_TO_LOCAL_STORAGE,
+  UPDATE_ACCORDING_TO_LOCAL_STORAGE_ERROR,
+  UPDATE_ACCORDING_TO_LOCAL_STORAGE_SUCCESS,
 } from '../actions/actionTypes';
 import { TodoState } from '../store/store';
 
@@ -46,11 +47,15 @@ function todoReducer(state = initialState, action): TodoState {
         ...state,
         todos: state.todos.filter(todo => todo.taskText !== action.payload.taskText),
       };
-  case UPDATE_ACCORDING_TO_LOCAL_STORAGE:
-      return {
-        ...action.payload,
-        darkMode: action.payload,
-      };
+  case UPDATE_ACCORDING_TO_LOCAL_STORAGE_SUCCESS:
+    return {
+      ...state,
+      ...action.payload,
+    };
+  case UPDATE_ACCORDING_TO_LOCAL_STORAGE_ERROR:
+    return {
+      ...initialState,
+    };  
     default:
       return state;
   }

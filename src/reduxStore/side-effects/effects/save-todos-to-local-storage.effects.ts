@@ -5,7 +5,7 @@ import { TodoState } from '../../store/store';
 export function* saveTodosToLocalStorageEffects() {
   try {
     const state: TodoState = yield select(selectState);
-    localStorage.setItem('todoState', JSON.stringify(state));
+    localStorage.setItem('todoState', JSON.stringify(state.todos));
   } catch (error) {
     console.error('Failed to save state to localStorage:', error);
   }
