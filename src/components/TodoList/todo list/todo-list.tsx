@@ -20,17 +20,14 @@ export class TodoList {
   private unsubscribe: Unsubscribe = null;
 
   componentWillLoad() {
-    console.log('Component will load');
     store.dispatch(updateAccordingToLocalStorage());
     this.syncWithStore();
     this.unsubscribe = store.subscribe(() => {
-      console.log('Store updated, syncing...');
       this.syncWithStore();
     });
   }
 
   syncWithStore() {
-    console.log('Syncing with store');
     const newTasks = selectAllTodos();
     const newDarkMode = selectDarkModeState();
     const newTaskText = selectNewTaskText();
@@ -44,9 +41,6 @@ export class TodoList {
     if (this.newTaskText !== newTaskText) {
       this.newTaskText = newTaskText;
     }
-
-    console.log('Current tasks:', this.tasks);
-    console.log('Dark mode:', this.darkMode);
   }
 
   toggleDarkMode() {
@@ -61,10 +55,8 @@ export class TodoList {
 
   handleFormSubmit(event: Event) {
     event.preventDefault();
-    console.log('Form submitted, current text:', this.newTaskText);
     if (this.newTaskText.trim()) {
       const task = new Task(this.newTaskText);
-      console.log('Creating new task:', task);
       store.dispatch(addTodo(task));
     }
   }
@@ -76,7 +68,6 @@ export class TodoList {
 
   handleInputChange(event: Event) {
     const target = event.target as HTMLInputElement;
-    console.log('Input changed to:', target.value);
     store.dispatch({ type: 'UPDATE_NEW_TASK_TEXT', payload: target.value });
   }
 
