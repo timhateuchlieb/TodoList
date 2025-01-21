@@ -19,6 +19,5 @@ function* toggleDarkModeSaga() {
 }
 
 function* readFromLocalStorage() {
-  console.log('readFromLocalStorage');
   yield call(readFromLocalStorageEffects);
 }

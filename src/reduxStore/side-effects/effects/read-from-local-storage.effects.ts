@@ -1,36 +1,19 @@
 import { put } from '@redux-saga/core/effects';
-import { TodoState } from '../../store/store';
-import { initialState } from '../../reducer/reducer';
-
-let isInitialLoad = true;
+import { updateAccordingToLocalStorageError } from '../../actions/actions';
+import { updateAccordingToLocalStorageSuccess } from '../../actions/actions';
 
 export function* readFromLocalStorageEffects() {
   try {
     const todoState = localStorage.getItem('todoState');
     const darkMode = localStorage.getItem('darkMode') === 'true';
-    
-    let loadedState: TodoState = initialState;
+    const isDarkModeClass = document.documentElement.classList.contains('darkMode');
 
-    if (todoState && todoState !== 'undefined') {
-      const parsedState = JSON.parse(todoState) as TodoState;
-      loadedState = {
-        ...parsedState,
-        darkMode,
-      };
+    if (darkMode !== isDarkModeClass) {
+      document.documentElement.classList.toggle('darkMode', darkMode);
     }
 
-    if (isInitialLoad) {
-      isInitialLoad = false;
-      yield put({ 
-        type: 'UPDATE_ACCORDING_TO_LOCAL_STORAGE', 
-        payload: loadedState, 
-      });
-    }
-
+    yield put(updateAccordingToLocalStorageSuccess( {todos: JSON.parse(todoState), darkMode: darkMode}));
   } catch (error) {
-    yield put({ 
-      type: 'UPDATE_ACCORDING_TO_LOCAL_STORAGE', 
-      payload: initialState 
-    });
+    yield put(updateAccordingToLocalStorageError());
   }
 }
