@@ -6,6 +6,8 @@ import {
   TOGGLE_DARK_MODE,
   TOGGLE_TODO,
   UPDATE_NEW_TASK_TEXT,
+  UPDATE_ACCORDING_TO_LOCAL_STORAGE_ERROR,
+  UPDATE_ACCORDING_TO_LOCAL_STORAGE_SUCCESS,
 } from './actionTypes';
 
 export const addTodo = (task: Task) => ({
@@ -34,4 +36,13 @@ export const deleteTodo = (task: Task) => ({    //todo     never used, not imple
 
 export const updateAccordingToLocalStorage = () => ({
   type: UPDATE_ACCORDING_TO_LOCAL_STORAGE,
+});
+
+export const updateAccordingToLocalStorageError = () => ({
+  type: UPDATE_ACCORDING_TO_LOCAL_STORAGE_ERROR,
+});
+
+export const updateAccordingToLocalStorageSuccess = (state) => ({
+  type: UPDATE_ACCORDING_TO_LOCAL_STORAGE_SUCCESS,
+  payload: state,
 });
