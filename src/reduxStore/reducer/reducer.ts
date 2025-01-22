@@ -62,5 +62,4 @@ function todoReducer(state = initialState, action): TodoState {
       return state;
   }
 }
-
 export default todoReducer;
