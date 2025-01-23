@@ -44,7 +44,10 @@ export class TodoList {
   }
 
   toggleDarkMode() {
-    store.dispatch(toggleDarkMode());
+    console.log('toggleDarkMode');
+    const newDarkModeState = !this.darkMode;
+    console.log('newDarkModeState', newDarkModeState);
+    store.dispatch(toggleDarkMode(newDarkModeState));
   }
 
   disconnectedCallback() {
