@@ -3,12 +3,11 @@ import { updateAccordingToLocalStorageError } from '../../actions/actions';
 import { updateAccordingToLocalStorageSuccess } from '../../actions/actions';
 
 export function* readFromLocalStorageEffects() {
-  try {
+  if (localStorage.getItem('todoState') && localStorage.getItem('darkMode')) {
     const todoState = localStorage.getItem('todoState');
     const darkMode = localStorage.getItem('darkMode') === 'true';
-
     yield put(updateAccordingToLocalStorageSuccess( {todos: JSON.parse(todoState), darkMode: darkMode}));
-  } catch (error) {
+  } else{
     yield put(updateAccordingToLocalStorageError());
   }
 }
