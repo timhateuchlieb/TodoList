@@ -1,3 +1,3 @@
-export function* toggleDarkModeUI(newDarkModeState) {
+export function* changeUiFromDarkmodeLightmodeEffects(newDarkModeState) {
     document.documentElement.classList.toggle('darkMode', newDarkModeState);
 }

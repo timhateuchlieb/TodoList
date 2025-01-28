@@ -30,7 +30,7 @@ export const toggleDarkMode = (newDarkModeState) => ({
   payload: newDarkModeState,
 });
 
-export const deleteTodo = (task: Task) => ({    //todo     never used, not implemented a delete functionality jet!
+export const deleteTodo = (task: Task) => ({  //todo    never used, not implemented a delete functionality jet!
   type: DELETE_TODO,
   payload: task,
 });
