@@ -52,7 +52,6 @@ function todoReducer(state = initialState, action): TodoState {
       return{
         ...state,
         todos: action.payload.todos,
-        darkMode: action.payload.darkMode,
       }
     case UPDATE_ACCORDING_TO_LOCAL_STORAGE_ERROR:
       return {
