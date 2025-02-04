@@ -25,7 +25,7 @@ export const updateNewTaskText = (text: string) => ({
   payload: text,
 });
 
-export const toggleDarkMode = (newDarkModeState) => ({
+export const toggleDarkMode = (newDarkModeState: boolean) => ({
   type: TOGGLE_DARK_MODE,
   payload: newDarkModeState,
 });

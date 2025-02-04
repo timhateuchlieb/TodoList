@@ -47,12 +47,12 @@ function todoReducer(state = initialState, action): TodoState {
         ...state,
         todos: state.todos.filter(todo => todo.taskText !== action.payload.taskText),
       };
-    case UPDATE_ACCORDING_TO_LOCAL_STORAGE_SUCCESS:
+    case UPDATE_ACCORDING_TO_LOCAL_STORAGE_SUCCESS: 
       document.documentElement.classList.toggle('darkMode', action.payload.darkMode);
       return{
         ...state,
         todos: action.payload.todos,
-      }
+      };
     case UPDATE_ACCORDING_TO_LOCAL_STORAGE_ERROR:
       return {
         ...initialState,
