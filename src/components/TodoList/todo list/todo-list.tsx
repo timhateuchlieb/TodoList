@@ -44,9 +44,7 @@ export class TodoList {
   }
 
   toggleDarkMode() {
-    console.log("toggleDarkMode Button Clicked");
-    const newDarkModeState = !this.darkMode;
-    console.log('newDarkModeState', newDarkModeState);
+    let newDarkModeState: boolean = !this.darkMode;
     store.dispatch(toggleDarkMode(newDarkModeState));
   }
 

@@ -1,3 +1,5 @@
-export function* changeLocalStorageDarkModeLightModeEffects(newDarkModeState: boolean) {
-  localStorage.setItem('darkMode', String(newDarkModeState));
+export function* changeLocalStorageDarkModeLightModeEffects(newDarkModeState) {
+
+  localStorage.setItem('darkMode', newDarkModeState.toString());
 }
+
