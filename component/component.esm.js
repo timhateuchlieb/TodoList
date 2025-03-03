@@ -1,0 +1,2 @@
+import{p as e,b as t}from"./p-eeff85e7.js";export{s as setNonce}from"./p-eeff85e7.js";import{g as o}from"./p-e1255160.js";var a=()=>{const t=import.meta.url;const s={};if(t!==""){s.resourcesUrl=new URL(".",t).href}return e(s)};a().then((async e=>{await o();return t([["p-1820ce70",[[1,"todo-list",{tasks:[32],darkMode:[32],newTaskText:[32]}],[1,"todo-item",{task:[16]}]]]],e)}));
+//# sourceMappingURL=component.esm.js.map

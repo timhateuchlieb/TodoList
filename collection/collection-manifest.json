@@ -1,0 +1,13 @@
+{
+  "entries": [
+    "components/TodoList/list-items/todo-item.js",
+    "components/TodoList/todo list/todo-list.js"
+  ],
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "4.23.0",
+    "typescriptVersion": "5.5.4"
+  },
+  "collections": [],
+  "bundles": []
+}
