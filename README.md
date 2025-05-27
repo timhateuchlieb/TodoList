@@ -1,14 +1,11 @@
 # TodoList 📋
 
-A quite simple Todo List application built with a [StencilJS](https://stenciljs.com/) and [Redux](https://redux.js.org/) techstack.
+A quite simple Todo List application built with a [StencilJS](https://stenciljs.com/) and [Redux](https://redux.js.org/) tech stack.
 
 ## 📌 Features
 
-- Add, and complete todos
-- StencilJS for Web Components
-- Redux for state management
+- Add, and complete todos :)
 
+## 🎯 My Goal with this project
 
-## 🎯 Why i did this project
-
-I worked on this Project as my first Project with Stencil + Redux. It was fully made for learning purposes.
+This was my first project using StencilJS and Redux. I built it purely for learning purposes.
